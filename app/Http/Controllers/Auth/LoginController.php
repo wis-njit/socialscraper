@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use DB;
+use Socialite;
+use App\User;
+use Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class LoginController extends Controller
 {
@@ -36,4 +41,65 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
+
+
+    /**
+     * Redirect the user to the GitHub authentication page.
+     *
+     * @return Response
+     */
+    public function redirectToProvider($oauthProvider)
+    {
+        return Socialite::driver($oauthProvider)->redirect();
+    }
+
+    /**
+     * Obtain the user information from GitHub.
+     *
+     * @return Response
+     */
+    public function handleProviderCallback($oauthProvider)
+    {
+
+        try {
+            $user = Socialite::driver($oauthProvider)->user();
+        } catch (Exception $e) {
+            return Redirect::to('auth/' + $oauthProvider);
+        }
+
+        $authUser = $this->findOrCreateUser($user, $oauthProvider);
+
+        Auth::login($authUser, true);
+
+        return Redirect::to('home');
+        //TODO comment done testing
+        //return serialize($user);
+    }
+
+    /**
+     * Return user if exists; create and return if doesn't
+     *
+     * @param $user
+     * @return User
+     */
+    private function findOrCreateUser($user, $oauthProvider)
+    {
+        //TODO Refactor for multiple providers
+        //if ($authUser = DB::table('users')->where(['oauthprovider' => $oauthProvider, '' => $user->id])->first()) {
+
+        //Static Google test
+        $authUser = User::where('email', $user->email)->first();
+        if ($authUser){
+            return $authUser;
+        }else {
+            User::create([
+                'email' => $user->email,
+                'password' => bcrypt(bcrypt($user->id)),
+                'name' => $user->name,
+
+            ]);
+
+        }
+    }
 }
+

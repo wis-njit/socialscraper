@@ -59,6 +59,7 @@
                                 </a>
                             </div>
                         </div>
+                        <a href="/auth/google">Login in with Google</a>
                     </form>
                 </div>
             </div>

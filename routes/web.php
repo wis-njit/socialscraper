@@ -23,3 +23,7 @@ Route::group(['prefix' => 'admin'], function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+Route::get('/auth/{oauthProvider}', 'Auth\LoginController@redirectToProvider');
+
+Route::get('auth/{oauthProvider}/oauthcallback', 'Auth\LoginController@handleProviderCallback');
