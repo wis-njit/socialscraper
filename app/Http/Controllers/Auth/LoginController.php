@@ -71,6 +71,9 @@ class LoginController extends Controller
 
         Auth::login($authUser, true);
 
+        if($oauthProvider == 'instagram'){
+            //flash & redirect to email entry
+        }
         return Redirect::to('home');
         //TODO comment done testing
         //return serialize($user);
@@ -87,18 +90,36 @@ class LoginController extends Controller
         //TODO Refactor for multiple providers
         //if ($authUser = DB::table('users')->where(['oauthprovider' => $oauthProvider, '' => $user->id])->first()) {
 
-        //Static Google test
-        $authUser = User::where('email', $user->email)->first();
-        if ($authUser){
-            return $authUser;
-        }else {
-            User::create([
-                'email' => $user->email,
-                'password' => bcrypt(bcrypt($user->id)),
-                'name' => $user->name,
+        //Static Google/FB/Twitter
+        if($oauthProvider != 'instagram'){
+            $authUser = User::where('email', $user->email)->first();
+            if ($authUser){
+                return $authUser;
+            }else {
+                return User::create([
+                    'email' => $user->email,
+                    'password' => bcrypt(bcrypt($user->id)),
+                    'name' => $user->name,
 
-            ]);
+                ]);
 
+            }
+        }
+        //Instagram for now
+        else{
+            $instEmail = $user->id . '@instagram.com';
+            $authUser = User::where('email', $instEmail)->first();
+            if ($authUser){
+                return $authUser;
+            }else {
+                return User::create([
+                    'email' => $instEmail,
+                    'password' => bcrypt(bcrypt($user->id)),
+                    'name' => $user->name,
+
+                ]);
+
+            }
         }
     }
 }

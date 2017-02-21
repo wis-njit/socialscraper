@@ -59,7 +59,10 @@
                                 </a>
                             </div>
                         </div>
-                        <a href="/auth/google">Login in with Google</a>
+                        <a class="btn btn-link" href="/auth/google">Log in with Google</a>
+                        <a class="btn btn-link" href="/auth/facebook">Log in with Facebook</a>
+                        <a class="btn btn-link" href="/auth/twitter">Log in with Twitter</a>
+                        <a class="btn btn-link" href="/auth/instagram">Log in with Instagram</a>
                     </form>
                 </div>
             </div>
