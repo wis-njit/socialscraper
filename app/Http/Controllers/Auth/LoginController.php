@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use DB;
-use Socialite;
-use App\User;
+use App\Services\SMService;
 use Auth;
+use config\constants\SocialProvidersEnum;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Redirect;
+use Socialite;
 
 class LoginController extends Controller
 {
@@ -31,15 +31,17 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/home';
+    protected $smServiceProvider;
 
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(SMService $smsProvider)
     {
         $this->middleware('guest', ['except' => 'logout']);
+        $this->smServiceProvider = $smsProvider;
     }
 
 
@@ -66,61 +68,15 @@ class LoginController extends Controller
         } catch (Exception $e) {
             return Redirect::to('auth/' + $oauthProvider);
         }
-
-        $authUser = $this->findOrCreateUser($user, $oauthProvider);
-
+        $authUser = $this->smServiceProvider->findOrCreateUser($user, $oauthProvider);
         Auth::login($authUser, true);
 
-        if($oauthProvider == 'instagram'){
+        if($oauthProvider == SocialProvidersEnum::INSTAGRAM){
             //flash & redirect to email entry
         }
         return Redirect::to('home');
         //TODO comment done testing
         //return serialize($user);
-    }
-
-    /**
-     * Return user if exists; create and return if doesn't
-     *
-     * @param $user
-     * @return User
-     */
-    private function findOrCreateUser($user, $oauthProvider)
-    {
-        //TODO Refactor for multiple providers
-        //if ($authUser = DB::table('users')->where(['oauthprovider' => $oauthProvider, '' => $user->id])->first()) {
-
-        //Static Google/FB/Twitter
-        if($oauthProvider != 'instagram'){
-            $authUser = User::where('email', $user->email)->first();
-            if ($authUser){
-                return $authUser;
-            }else {
-                return User::create([
-                    'email' => $user->email,
-                    'password' => bcrypt(bcrypt($user->id)),
-                    'name' => $user->name,
-
-                ]);
-
-            }
-        }
-        //Instagram for now
-        else{
-            $instEmail = $user->id . '@instagram.com';
-            $authUser = User::where('email', $instEmail)->first();
-            if ($authUser){
-                return $authUser;
-            }else {
-                return User::create([
-                    'email' => $instEmail,
-                    'password' => bcrypt(bcrypt($user->id)),
-                    'name' => $user->name,
-
-                ]);
-
-            }
-        }
     }
 }
 
