@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use App\ProviderUserProfile;
 //use Illuminate\Foundation\Auth\User as Authenticatable;
 
 //class User extends Authenticatable
@@ -31,4 +32,9 @@ class User extends Model implements AuthenticatableContract
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function snsProfile(){
+
+        return $this->hasMany(ProviderUserProfile::class);
+    }
 }
