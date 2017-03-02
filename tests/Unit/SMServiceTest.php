@@ -56,6 +56,9 @@ class SMServiceTest extends TestCase
 
     }
 
+    /**
+     * Test lookup by SNS provider id's
+     */
     public function testFindOrCreateUserByProviderId(){
 
         $this->dbUser->email = "";
