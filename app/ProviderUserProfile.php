@@ -15,4 +15,8 @@ class ProviderUserProfile extends Model
     function providerName(){
         return $this->hasOne(Provider::class, 'id', 'provider_type_id');
     }
+
+    function user(){
+        return $this->belongsTo(User::class, 'id', 'user_id');
+    }
 }
