@@ -2,70 +2,108 @@
 
 namespace Tests\Unit;
 
-use App\ProviderUserProfile;
-use app\User;
-use config\constants\SocialProvidersEnum;
-use Tests\TestCase;
+use Laravel\Socialite\Two\User;
+use Illuminate\Support\Facades\DB;
+use App\Services\SMService;
+use Config\Constants\SocialProvidersEnum;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use App\Services\SMService;
+use Tests\TestCase;
 
+//TODO use Mockery
 class SMServiceTest extends TestCase
 {
 
     use DatabaseTransactions;
+    use DatabaseMigrations;
 
-    private $dbUser;
-    private $snsAccount;
     private $smService;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->dbUser = $this->initDBUser();
-        $this->snsAccount = $this->initSNSAccount();
         $this->smService = new SMService();
+        $this->seed("TestDatabaseSeeder");
+        //DB::connection()->enableQueryLog();
     }
 
-    private function initDBUser(){
-        $snsProfile = new ProviderUserProfile();
-        $snsProfile->provider_user_id = '7-8329295';
-
-        $user = new User();
-        $user->name = 'admin';
-        $user->email = 'admin@admin.com';
-        $user->snsProfile = $snsProfile;
-        return $user;
-    }
-
-    private function initSNSAccount(){
+    //Mimics basic info some SNS' return
+    private function getTestSnsAccount1(){
 
         $snsAccount = new User();
-        $snsAccount->name = 'admin';
-        $snsAccount->email = 'admin@admin.com';
-        $snsAccount->id = '5-8329295';
+        $snsAccount->name = 'testuser';
+        $snsAccount->email = 'testuser@example.com';
+        $snsAccount->id = 'fooid';
+        return $snsAccount;
+    }
+
+    private function getTestSnsGoogleEmail(){
+
+        $snsAccount = new User();
+        $snsAccount->name = 'testuser1';
+        $snsAccount->email = 'testuser1-google-email@example.com';
+        $snsAccount->id = 'testuser1-google-1234';
         return $snsAccount;
     }
     /**
-     *Test email lookup of user returned from SNS
+     *Test successful email lookup of user returned from SNS
      */
-    public function testFindOrCreateUser()
+    public function testFindOrCreateUserByPrimaryAccountEmail()
     {
-        $authUser = $this->smService->findOrCreateUser($this->snsAccount, SocialProvidersEnum::GOOGLE);
-        $this->assertEquals($this->dbUser->email, $authUser->email, 'Email address did not match');
-
+        $authUser = $this->smService->findOrCreateUser($this->getTestSnsAccount1(), SocialProvidersEnum::GOOGLE);
+        $this->assertEquals('testuser@example.com', $authUser->email, 'Email address did not match');
     }
 
     /**
-     * Test lookup by SNS provider id's
+     * Test lookup by SNS provider id
      */
     public function testFindOrCreateUserByProviderId(){
 
-        $this->dbUser->email = "";
-        $authUser = $this->smService->findOrCreateUser($this->snsAccount, SocialProvidersEnum::GOOGLE);
+        $authUser = $this->smService->findOrCreateUser($this->getTestSnsGoogleEmail(), SocialProvidersEnum::GOOGLE);
+        $hasProviderId = $authUser->snsProfile->contains('provider_user_id', 'testuser1-google-1234');
+        $this->assertTrue($hasProviderId, 'Provider id was not listed');
+    }
 
-        $hasProviderId = $authUser->snsProfile->contains('provider_user_id', $this->dbUser->snsProfile->provider_user_id);
-        //print_r($hasProviderId);
-        $this->assertTrue($hasProviderId);
+    /**
+     * Test lookup by the SNS provider email
+     */
+   /* public function testFindOrCreateUserByProviderProfileEmail(){
+
+        $authUser = $this->smService->findOrCreateUser($this->getTestSnsGoogleEmail(), SocialProvidersEnum::GOOGLE);
+        $hasProviderEmail = $authUser->snsProfile->contains('email', 'testuser1-google-email@example.com');
+        $this->assertTrue($hasProviderEmail, "Provider's listed email was not among those returned.");
+    }*/
+
+    /**NEGATIVE TESTS**/
+
+    /**
+     * Test lookup by SNS provider id does not match one we know is in the db
+     */
+    public function testFindOrCreateUserByProviderId_Negative(){
+
+        $authUser = $this->smService->findOrCreateUser($this->getTestSnsAccount1(), SocialProvidersEnum::GOOGLE);
+        $hasProviderId = $authUser->snsProfile->contains('provider_user_id', 'testuser1-google-1234');
+        $this->assertFalse($hasProviderId);
+    }
+
+       /**
+     * Ensure lookup by provider email does not return unrelated results
+     */
+    /*public function testFindOrCreateUserByProviderProfileEmail_Negative(){
+
+        $authUser = $this->smService->findOrCreateUser($this->getTestSnsGoogleEmail(), SocialProvidersEnum::GOOGLE);
+        $hasProviderEmail = $authUser->snsProfile->contains('email', 'testuser2-google-email@example.com');
+        $this->assertFalse($hasProviderEmail);
+    }*/
+
+    /**
+     * Ensure lookup by provider email does not return results when incorrect
+     */
+    public function testFindOrCreateUserByProviderProfileEmailMismatchedProviderType_Negative(){
+
+        $authUser = $this->smService->findOrCreateUser($this->getTestSnsGoogleEmail(), SocialProvidersEnum::TWITTER);
+        $hasProviderEmail = $authUser->snsProfile->contains('email', 'testuser1-google-email@example.com');
+        $this->assertFalse($hasProviderEmail);
+
     }
 }
