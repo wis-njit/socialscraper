@@ -8,6 +8,6 @@ class Provider extends Model
 {
 
     function providerUserProfile(){
-        return $this->belongsTo(ProviderUserProfile::class, 'provider_type_id');
+        return $this->belongsTo(ProviderUserProfile::class, 'id','provider_type_id');
     }
 }
