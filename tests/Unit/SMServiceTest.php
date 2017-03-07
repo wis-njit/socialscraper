@@ -2,12 +2,11 @@
 
 namespace Tests\Unit;
 
-use Laravel\Socialite\Two\User;
-use Illuminate\Support\Facades\DB;
 use App\Services\SMService;
 use Config\Constants\SocialProvidersEnum;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Laravel\Socialite\Two\User;
 use Tests\TestCase;
 
 //TODO use Mockery
