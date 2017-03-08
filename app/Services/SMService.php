@@ -2,6 +2,7 @@
 
 namespace app\Services;
 
+use App\Provider;
 use App\ProviderUserProfile;
 use config\constants\SocialProvidersEnum;
 use app\User;
@@ -30,7 +31,7 @@ class SMService
         if ($authUser){
             return $authUser;
         }else {
-            return $this->createUser($user);
+            return $this->createUser($user, $oauthProvider);
         }
 
     }
@@ -39,15 +40,30 @@ class SMService
      * @param $user
      * @return User
      */
-    private function createUser($user)
+    private function createUser($user, $oauthProvider = null)
     {
+        $pup = new ProviderUserProfile();
 
-        return User::create([
-            'email' => $user->email ? : ' ',
-            'password' => bcrypt(bcrypt($user->id)),
-            'name' => $user->name,
+        if($oauthProvider) {
 
-        ]);
+            $pup->provider_type_id = Provider::getIdFromName($oauthProvider);
+            $pup->email = $user->email;
+            $pup->name = $user->name;
+            $pup->provider_user_id = $user->id;
+        }
+
+        $nUser = new User();
+        \DB::transaction(function () use ($user, $pup, $nUser) {
+
+            $nUser->email = $user->email ? : ' ';
+            $nUser->password = bcrypt(bcrypt($user->id)); //FIXME use UUID
+            $nUser->name = $user->name;
+            $nUser->save();
+            $nUser->snsProfile()->save($pup);
+
+        });
+        return $nUser;
+
     }
 
     /**
