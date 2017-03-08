@@ -75,8 +75,6 @@ class LoginController extends Controller
             //flash & redirect to email entry
         }
         return Redirect::to('home');
-        //TODO comment done testing
-        //return serialize($user);
     }
 }
 
