@@ -9,20 +9,11 @@ use app\User;
 
 class SMService
 {
-    /**
-     * SMSService constructor.
-     */
+
     public function __construct()
     {
     }
 
-    /**
-     * Return user if exists; create and return if doesn't
-     *
-     * @param $user
-     * @param String $oauthProvider The Oauth provider used
-     * @return User
-     */
     public function findOrCreateUser($user, $oauthProvider)
     {
 
@@ -36,10 +27,7 @@ class SMService
 
     }
 
-    /**
-     * @param $user
-     * @return User
-     */
+
     private function createUser($user, $oauthProvider = null)
     {
         $pup = new ProviderUserProfile();
@@ -66,10 +54,7 @@ class SMService
 
     }
 
-    /**
-     * @param $user
-     * @return mixed
-     */
+
     private function findUserAccount($user, $oauthProvider)
     {
         //Look for a user with the email address
@@ -80,12 +65,7 @@ class SMService
         return $authUser;
     }
 
-    /**
-     * @param $user
-     * @param $oauthProvider
-     * @param $authUser
-     * @return mixed
-     */
+
     private function findUserByProviderProfile($user, $oauthProvider)
     {
         //We will not lookup users' provider data by email as we
@@ -103,10 +83,7 @@ class SMService
             return null;
     }
 
-    /**
-     * @param $user
-     * @return mixed
-     */
+
     private function findUserByLocalProfile($user)
     {
         return User::where('email', $user->email)->first();
