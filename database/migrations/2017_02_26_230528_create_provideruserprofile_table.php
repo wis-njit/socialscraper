@@ -18,10 +18,10 @@ class CreateProviderUserProfileTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->integer('provider_type_id')->unsigned();
-            $table->foreign('provider_type_id')->references('id')->on('provider');
+            $table->foreign('provider_type_id')->references('id')->on('providers');
             $table->string('provider_user_id');
-            $table->string('email')->unique();
-            $table->string('name');
+            $table->string('email')->unique()->nullable();
+            $table->string('name')->nullable();
             $table->softDeletes();
             $table->timestamps();
 

@@ -13,7 +13,7 @@ class CreateProviderTable extends Migration
      */
     public function up()
     {
-        Schema::create('provider', function (Blueprint $table) {
+        Schema::create('providers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->unique();
             $table->timestamps();
@@ -27,6 +27,6 @@ class CreateProviderTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('provider');
+        Schema::dropIfExists('providers');
     }
 }
