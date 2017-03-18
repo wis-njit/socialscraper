@@ -46,7 +46,7 @@ class LoginController extends Controller
 
 
     /**
-     * Redirect the user to the GitHub authentication page.
+     * Redirect the user to the social network provider authentication page.
      *
      * @return Response
      */
@@ -56,7 +56,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Obtain the user information from GitHub.
+     * Obtain the user information from the social network provider.
      *
      * @return Response
      */
