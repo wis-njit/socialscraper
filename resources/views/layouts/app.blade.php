@@ -70,6 +70,7 @@
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
+                                    <li><a href="/user/profile">Profile</a></li>
                                 </ul>
                             </li>
                         @endif
