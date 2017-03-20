@@ -58,14 +58,20 @@ class AuthController extends Controller
                 }
                 return Redirect::to('home');
             }
-            //Linking accounts - verify
+            //Linking accounts - we are not logging the returned user in, just pulling their info
             else{
 
                 //$user = Socialite::driver($oauthProvider)->stateless()->user(); //Twitter provider doesn't support stateless()
                 $user = Socialite::driver($oauthProvider)->user();
 
-                if(true)
-                    Request::flash("Profile linked");
+                $linkedUser = $this->smServiceProvider->linkProviderProfile($user, $oauthProvider);
+                if($linkedUser){
+                    Request::session()->flash('alert-success', 'Profile linked');
+                }
+                else {
+                    Request::session()->flash('alert-warning', 'Profile link failed');
+                }
+
                 return Redirect::to('user/profile');
             }
         } catch (Exception $e) {

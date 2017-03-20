@@ -6,6 +6,8 @@ use App\Provider;
 use App\ProviderUserProfile;
 use config\constants\SocialProvidersEnum;
 use app\User;
+use Auth;
+use Laravel\Socialite\AbstractUser;
 
 class SMService
 {
@@ -103,5 +105,21 @@ class SMService
             throwException("Provider " . $oauthProvider . " not supported");
         }
 
+    }
+
+    /**
+     * Given a returned SNS provider's user account and the provider type
+     * link the current user to the existing provider profile by updating the
+     * associated local user's id
+     * @param AbstractUser $oauthUser
+     * @param string $oauthProvider
+     * @return User
+     */
+    public function linkProviderProfile(AbstractUser $oauthUser, string $oauthProvider){
+
+        $currUser = Auth::user();
+        $provUser = $this->getUserProviderProfile($oauthUser, $oauthProvider);
+        $provUser->user_id = $currUser->id;
+        return $provUser->save();
     }
 }
