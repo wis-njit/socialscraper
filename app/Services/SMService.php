@@ -17,7 +17,7 @@ class SMService
     public function findOrCreateUser($user, $oauthProvider)
     {
 
-        $authUser = $this->findUserAccount($user, $oauthProvider);
+        $authUser = $this->findUserByProviderProfile($user, $oauthProvider);
 
         if ($authUser){
             return $authUser;
@@ -40,42 +40,34 @@ class SMService
             $pup->provider_user_id = $user->id;
         }
 
-        $nUser = new User();
-        \DB::transaction(function () use ($user, $pup, $nUser) {
+        $nUser = $this->findUserByLocalProfile($user);
+        if(!$nUser){
+            $nUser = new User();
+            \DB::transaction(function () use ($user, $pup, $nUser) {
 
-            $nUser->email = $user->email ? : ' ';
-            $nUser->password = bcrypt(bcrypt($user->id)); //FIXME use UUID
-            $nUser->name = $user->name;
-            $nUser->save();
+                $nUser->email = $user->email ? : ' ';
+                $nUser->password = bcrypt(bcrypt($user->id)); //FIXME use UUID
+                $nUser->name = $user->name;
+                $nUser->save();
+                $nUser->snsProfile()->save($pup);
+
+            });
+        }
+        else{
             $nUser->snsProfile()->save($pup);
+        }
 
-        });
+
         return $nUser;
 
     }
-
-
-    private function findUserAccount($user, $oauthProvider)
-    {
-        //Look for a user with the email address
-        $authUser = $this->findUserByLocalProfile($user);
-        if(!$authUser) {
-            $authUser = $this->findUserByProviderProfile($user, $oauthProvider);
-        }
-        return $authUser;
-    }
-
 
     private function findUserByProviderProfile($user, $oauthProvider)
     {
         //We will not lookup users' provider data by email as we
         //cannot ensure that the provider is ensuring they own that address
 
-        $retUser = ProviderUserProfile::whereHas('providerName' , function($query) use ($oauthProvider){
-                $query->where('name', $oauthProvider);
-            })
-            ->where('provider_user_id', $user->id)
-            ->first();
+        $retUser = $this->getUserProviderProfile($user, $oauthProvider);
 
         if($retUser)
             return $retUser->user;
@@ -83,6 +75,13 @@ class SMService
             return null;
     }
 
+    private function getUserProviderProfile($user, $oauthProvider){
+        return ProviderUserProfile::whereHas('providerName' , function($query) use ($oauthProvider){
+            $query->where('name', $oauthProvider);
+        })
+            ->where('provider_user_id', $user->id)
+            ->first();
+    }
 
     private function findUserByLocalProfile($user)
     {
