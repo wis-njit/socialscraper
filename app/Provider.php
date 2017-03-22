@@ -15,4 +15,7 @@ class Provider extends Model
         return Provider::where('name', $providerName)->firstOrFail()->id;
     }
 
+    static function getAllProviderNames(){
+        return Provider::pluck('name');
+    }
 }
