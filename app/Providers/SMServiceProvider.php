@@ -2,8 +2,6 @@
 
 namespace App\Providers;
 
-use App\Providers\SMServiceProviderInterface;
-use app\Services\SMService;
 use Illuminate\Support\ServiceProvider;
 
 class SMServiceProvider extends ServiceProvider
