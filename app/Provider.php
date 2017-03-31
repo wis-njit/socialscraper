@@ -12,10 +12,10 @@ class Provider extends Model
     }
 
     static function getIdFromName($providerName){
-        return Provider::where('name', $providerName)->firstOrFail()->id;
+        return self::where('name', $providerName)->firstOrFail()->id;
     }
 
     static function getAllProviderNames(){
-        return Provider::pluck('name');
+        return self::pluck('name');
     }
 }
