@@ -117,9 +117,8 @@ class SMService
      */
     public function linkProviderProfile(AbstractUser $oauthUser, string $oauthProvider){
 
-        $currUser = Auth::user();
         $provUser = $this->getUserProviderProfile($oauthUser, $oauthProvider);
-        $provUser->user_id = $currUser->id;
+        $provUser->user_id = Auth::id;
         return $provUser->save();
     }
 }
