@@ -7,13 +7,12 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use App\ProviderUserProfile;
-//use Illuminate\Foundation\Auth\User as Authenticatable;
 
-//class User extends Authenticatable
 class User extends Model implements AuthenticatableContract
 {
     use Notifiable;
     use Authenticatable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
