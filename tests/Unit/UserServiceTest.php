@@ -40,4 +40,9 @@ class UserServiceTest extends TestCase
             \DB::getQueryLog()
         );*/
     }
+
+    public function testDisassociateProviderAccount(){
+        self::assertTrue($this->userService->disassociateProviderAccount('google', 1) == 1);
+        self::assertTrue($this->userService->disassociateProviderAccount('foo', -1) == 0);
+    }
 }
