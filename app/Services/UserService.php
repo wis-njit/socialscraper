@@ -2,6 +2,7 @@
 
 namespace app\Services;
 
+use App\ProviderUserProfile;
 use DB;
 
 class UserService
@@ -21,12 +22,22 @@ class UserService
                                 SELECT provider_type_id
                                 FROM provider_user_profiles pu
                                 WHERE p.id = pu.provider_type_id 
-                                AND pu.user_id = ?) 
+                                AND pu.user_id = ?
+                                AND pu.deleted_at is null) 
                              THEN 1 ELSE 0 END) as active'
                 )
             )->addBinding($userId, 'select')
             ->get();
 
+    }
+
+    //TODO need future ability to disassociate multiple provider accounts
+    public function disassociateProviderAccount($oauthProvider, $userId){
+        return ProviderUserProfile::whereHas('providerName' , function($query) use ($oauthProvider){
+            $query->where('name', $oauthProvider);
+        })
+            ->where('user_id', $userId)
+            ->delete();
     }
 
 }

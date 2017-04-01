@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Provider;
-use Illuminate\Http\Request;
 use App\Services\UserService;
+use Auth;
+use config\constants\SocialProvidersEnum;
+use Request;
 
 class ProfileController extends Controller
 {
@@ -17,13 +18,25 @@ class ProfileController extends Controller
     }
     public function profile()
     {
-        return view('profile');
+        $accounts = $this->userService->getAllProviderAccounts(Auth::user()->id);
+        //dd($accounts);
+
+        return view('profile', compact('accounts'));
     }
 
-    public function getActiveProviders(){
-        $accounts = $this->userService->getAllProviderAccounts();
-        $providers = Provider::getAllProviderNames();
+    public function disassociateProvider($oauthProvider){
 
-        return view('profile', compact('accounts', 'providers'));
+        if($provEnum = SocialProvidersEnum::getValue($oauthProvider)){
+
+            if($deletedModel = $this->userService->disassociateProviderAccount($provEnum, Auth::id())){
+                Request::session()->flash('alert-success', 'Account unlinked');
+            }
+            else{
+                Request::session()->flash('alert-warning', 'Unable to unlink account');
+            }
+        }
+        $accounts = $this->userService->getAllProviderAccounts(Auth::id());
+
+        return view('profile', compact('accounts'));
     }
 }
