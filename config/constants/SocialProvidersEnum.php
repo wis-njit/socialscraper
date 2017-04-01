@@ -11,9 +11,8 @@ abstract class SocialProvidersEnum
     const INSTAGRAM = 'instagram';
 
     public static function isValidValue($value){
-        $r = new ReflectionClass(self::class);
-        $constants = $r->getConstants();
-        foreach ($constants as $constant){
+
+        foreach (self::getConstants() as $constant){
             if($constant === $value)
                 return true;
         }
@@ -21,12 +20,25 @@ abstract class SocialProvidersEnum
     }
 
     public static function getByValue($inputVal){
-        $r = new ReflectionClass(self::class);
-        $constants = $r->getConstants();
-        foreach ( $constants as $name => $value ){
+
+        foreach ( self::getConstants() as $name => $value ){
             if ( $value === $inputVal )
                 return $name;
         }
         return null;
+    }
+
+    public static function getValue($inputName){
+
+        foreach ( self::getConstants() as $name => $value ){
+            if ( $name === strtoupper($inputName) )
+                return $value;
+        }
+        return null;
+    }
+
+    private static function getConstants(){
+        $r = new ReflectionClass(self::class);
+        return $r->getConstants();
     }
 }
