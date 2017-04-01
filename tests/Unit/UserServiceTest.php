@@ -10,6 +10,7 @@ use Tests\TestCase;
 class UserServiceTest extends TestCase
 {
 
+    use DatabaseTransactions;
     use DatabaseMigrations;
 
     private $userService;
