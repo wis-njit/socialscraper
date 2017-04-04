@@ -36,10 +36,7 @@ class SMService
 
         if($oauthProvider) {
 
-            $pup->provider_type_id = Provider::getIdFromName($oauthProvider);
-            $pup->email = $user->email;
-            $pup->name = $user->name;
-            $pup->provider_user_id = $user->id;
+            $pup = $this->createProviderProfile($user, $oauthProvider);
         }
 
         $nUser = $this->findUserByLocalProfile($user);
@@ -118,7 +115,26 @@ class SMService
     public function linkProviderProfile(AbstractUser $oauthUser, string $oauthProvider){
 
         $provUser = $this->getUserProviderProfile($oauthUser, $oauthProvider);
+        if(!$provUser)
+            $provUser = $this->createProviderProfile($oauthUser, $oauthProvider);
         $provUser->user_id = Auth::id();
         return $provUser->save();
+    }
+
+    /**
+     * Returns an SNS provider profile that inlcudes email and name
+     * based on the passed SNS provider user data and provider type
+     * @param $user
+     * @param $oauthProvider
+     * @return ProviderUserProfile
+     */
+    private function createProviderProfile($user, $oauthProvider)
+    {
+        $pup = new ProviderUserProfile();
+        $pup->provider_type_id = Provider::getIdFromName($oauthProvider);
+        $pup->email = $user->email;
+        $pup->name = $user->name;
+        $pup->provider_user_id = $user->id;
+        return $pup;
     }
 }
