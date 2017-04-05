@@ -52,6 +52,7 @@ class AuthController extends Controller
 
                 $authUser = $this->smServiceProvider->findOrCreateUser($user, $oauthProvider);
                 Auth::login($authUser, true);
+                $this->setCurrentProvider($oauthProvider);
 
                 if($oauthProvider == SocialProvidersEnum::INSTAGRAM){
                     //flash & redirect to email entry
@@ -103,5 +104,9 @@ class AuthController extends Controller
             $oauthProvider = str_replace(self::NOLOGIN, '', $oauthProvider);
         }
         return $oauthProvider;
+    }
+
+    private function setCurrentProvider($oauthProvider){
+        session(['currentProvider' => $oauthProvider]);
     }
 }

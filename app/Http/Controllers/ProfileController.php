@@ -19,9 +19,8 @@ class ProfileController extends Controller
     public function profile()
     {
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
-        //dd($accounts);
 
-        return view('profile', compact('accounts'));
+        return view('profile', compact('accounts', 'currentProvider'));
     }
 
     public function disassociateProvider($oauthProvider){
