@@ -10,6 +10,7 @@
                 <div class="panel-body">
                     You are logged in!
                 </div>
+                <?php echo menu('user', 'bootstrap') ?>
             </div>
         </div>
     </div>
