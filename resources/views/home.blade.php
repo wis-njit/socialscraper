@@ -14,6 +14,7 @@
                         <li class="list-group-item"><a href="{{ url('/user/twitter') }}">Twitter API</a></li>
                     </ul>
                 </div>
+                <?php echo menu('user', 'bootstrap') ?>
             </div>
         </div>
     </div>

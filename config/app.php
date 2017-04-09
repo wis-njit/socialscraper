@@ -183,7 +183,7 @@ return [
 
 
         //IDE provider
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        //Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
 
     ],
 
