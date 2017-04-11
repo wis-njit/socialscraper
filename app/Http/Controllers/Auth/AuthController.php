@@ -2,18 +2,22 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
+use App\Services\SMService;
+use App\Services\UserService;
+use App\User;
 use Auth;
 use config\constants\SocialProvidersEnum;
 use Illuminate\Support\Facades\Redirect;
-use Socialite;
-use App\Services\SMService;
-use App\Http\Controllers\Controller;
+use Laravel\Socialite\AbstractUser;
 use Request;
+use Socialite;
 
 class AuthController extends Controller
 {
 
     protected $smServiceProvider;
+    protected $userService;
     private const NOLOGIN = 'nologin';
 
 
@@ -22,10 +26,12 @@ class AuthController extends Controller
      *
      * @return void
      */
-    public function __construct(SMService $smsProvider)
+    public function __construct(SMService $smsProvider, UserService $userService)
     {
         $this->smServiceProvider = $smsProvider;
+        $this->userService = $userService;
     }
+
     /**
      * Redirect the user to the social network provider authentication page.
      *
@@ -51,6 +57,8 @@ class AuthController extends Controller
                 $user = Socialite::driver($oauthProvider)->user();
 
                 $authUser = $this->smServiceProvider->findOrCreateUser($user, $oauthProvider);
+                $this->updateUserSNSToken($user, $authUser);
+
                 Auth::login($authUser, true);
                 $this->setCurrentProvider($oauthProvider);
 
@@ -67,6 +75,7 @@ class AuthController extends Controller
 
                 $linkedUser = $this->smServiceProvider->linkProviderProfile($user, $oauthProvider);
                 if($linkedUser){
+                    $this->updateUserSNSToken($user, $linkedUser);
                     Request::session()->flash('alert-success', 'Profile linked');
                 }
                 else {
@@ -108,5 +117,11 @@ class AuthController extends Controller
 
     private function setCurrentProvider($oauthProvider){
         session(['currentProvider' => $oauthProvider]);
+
+    }
+
+    private function updateUserSNSToken(AbstractUser $user, User $authUser){
+        $authUser->snsProfile->access_token = $user->token;
+        $this->userService->updateUser($authUser);
     }
 }
