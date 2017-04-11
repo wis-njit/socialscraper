@@ -3,6 +3,7 @@
 namespace app\Services;
 
 use App\ProviderUserProfile;
+use App\User;
 use DB;
 
 class UserService
@@ -38,6 +39,18 @@ class UserService
         })
             ->where('user_id', $userId)
             ->delete();
+    }
+
+    public function updateUser(User $user){
+        $user->save();
+    }
+
+    public function getUserProviderProfile($id, $oauthProvider){
+        return ProviderUserProfile::whereHas('providerName' , function($query) use ($oauthProvider){
+            $query->where('name', $oauthProvider);
+        })
+            ->where('user_id', $id)
+            ->first();
     }
 
 }
