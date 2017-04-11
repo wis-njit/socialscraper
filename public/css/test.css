@@ -1,0 +1,16 @@
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+
+.responsebox {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
+.get {
+    color: white;
+    background-color: #2ca02c;
+}
