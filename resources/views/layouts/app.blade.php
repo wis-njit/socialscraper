@@ -12,13 +12,14 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
-
+    <link href="/css/test.css" rel="stylesheet">
     <!-- Scripts -->
     <script>
         window.Laravel = {!! json_encode([
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+
 </head>
 <body>
     <div id="app">
@@ -73,6 +74,7 @@
                                     <li><a href="/user/profile">Profile</a></li>
                                 </ul>
                             </li>
+                            <li><a href="{{ url('/home') }}">Home</a></li>
                         @endif
                     </ul>
                 </div>
@@ -84,5 +86,6 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+    <script src="/js/prettify.js"></script>
 </body>
 </html>
