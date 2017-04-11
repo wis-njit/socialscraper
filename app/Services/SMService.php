@@ -135,6 +135,7 @@ class SMService
         $pup->email = $user->email;
         $pup->name = $user->name;
         $pup->provider_user_id = $user->id;
+        $pup->access_token = $user->token;
         return $pup;
     }
 }
