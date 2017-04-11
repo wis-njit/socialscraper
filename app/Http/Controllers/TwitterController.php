@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class FacebookController extends Controller
+class TwitterController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -24,7 +24,7 @@ class FacebookController extends Controller
      */
     public function index()
     {
-        return view('facebook');
+        return view('twitter');
     }
 
 
