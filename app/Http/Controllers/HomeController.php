@@ -3,18 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Services\UserService;
+use Auth;
 
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
+
+    private $userService;
+
+    public function __construct(UserService $userService){
         $this->middleware('auth');
+        $this->userService = $userService;
     }
 
     /**
@@ -24,7 +23,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $accounts = $this->userService->getAllProviderAccounts(Auth::id());
+        return view('home', compact('accounts'));
     }
 
 
