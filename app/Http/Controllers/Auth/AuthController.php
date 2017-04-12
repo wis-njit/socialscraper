@@ -75,7 +75,7 @@ class AuthController extends Controller
 
                 $linkedUser = $this->smServiceProvider->linkProviderProfile($user, $oauthProvider);
                 if($linkedUser){
-                    $this->updateUserSNSToken($user, $linkedUser);
+                    $this->updateUserSNSToken($user, Auth::user());
                     Request::session()->flash('alert-success', 'Profile linked');
                 }
                 else {
