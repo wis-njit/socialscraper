@@ -18,7 +18,7 @@
                     </div>
                     <div class="panel-heading text-center">Facebook</div>
                     <div class="panel-body">
-                      <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friendlists </h3>
+                      <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
                         @include('dummy')
 
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp; /{post-id} </h3>
