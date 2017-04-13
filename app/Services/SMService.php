@@ -44,7 +44,7 @@ class SMService
             $nUser = new User();
             \DB::transaction(function () use ($user, $pup, $nUser) {
 
-                $nUser->email = $user->email ? : ' ';
+                $nUser->email = $user->email ? : $user->id; //TODO test adequacy
                 $nUser->password = bcrypt(bcrypt($user->id)); //FIXME use UUID
                 $nUser->name = $user->name;
                 $nUser->save();
