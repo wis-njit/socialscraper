@@ -22,7 +22,7 @@
                     @foreach($accounts as $account)
 
 
-                        @if(session('currentProvider') === $account->name)
+                        @if($currentProvider === $account->name)
                             <a class="btn btn-default disabled" role="button" >{{ucfirst($account->name)}}</a>
                         @elseif($account->active === 1)
                             <a class="btn btn-default active" role="button" href="/user/disassociate/{{$account->name}}">Break {{ucfirst($account->name)}} Link</a>

@@ -67,14 +67,14 @@ class FacebookController extends Controller
 
         $promises = [
             'userid' => $client->getAsync($fbUserId . '?access_token=' . $accessToken),
-            'friendlists'   => $client->getAsync($fbUserId . '/friendlists' . '?access_token=' . $accessToken),
+            'friends'   => $client->getAsync($fbUserId . '/friends' . '?access_token=' . $accessToken),
             //that's all for now folks
         ];
 
         $results = Promise\settle($promises)->wait();
 
         $responses = array(
-            'userid_friendlists' => (string)$results['friendlists']['value']->getBody(),
+            'userid_friends' => (string)$results['friends']['value']->getBody(),
             'postid' => self::mockDataHead . 'postid'. self::mockData,
             'commentid' => self::mockDataHead . 'commentid'. self::mockData,
             'groupid' => self::mockDataHead . 'groupid'. self::mockData,
@@ -86,7 +86,7 @@ class FacebookController extends Controller
             'userid' => (string)$results['userid']['value']->getBody(),
             'offerid' => self::mockDataHead . 'offerid'. self::mockData
         );
-        return view('facebook', ['responses' => $responses]);
+        return view('facebook', compact('responses'));
     }
 
 }
