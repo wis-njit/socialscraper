@@ -1,96 +1,146 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-    <title>Laravel</title>
+@section('content')
 
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
+    <!-- BEGIN DOCUMENTATION -->
+    <!--
+                           -->
+    <!-- END DOCUMENTATION -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="row">
+                        <div class="panel-heading text-center">
+                            <a class="col-md-4" href="{{ url('/user/facebook') }}">Facebook Graph API</a>
+                            <a class="col-md-4" href="{{ url('/user/instagram') }}">Instagram API</a>
+                            <a class="col-md-4" href="{{ url('/user/twitter') }}">Twitter API</a>
+                        </div>
+                    </div>
+                    <div class="panel-heading text-center">Facebook</div>
+                    <div class="panel-body">
+<<<<<<< HEAD
+                      <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friendlists </h3>
+                        <script src="/js/prettify.js">
 
-    <!-- Styles -->
-    <style>
-        html, body {
-            background-color: #fff;
-            color: #636b6f;
-            font-family: 'Raleway', sans-serif;
-            font-weight: 100;
-            height: 100vh;
-            margin: 0;
-        }
+                        </script>
+                        <script>
+                            var test = {!! $responses['userid_friendlists'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
-        .full-height {
-            height: 100vh;
-        }
+=======
+                      <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
+                        @include('dummy')
+>>>>>>> refs/remotes/origin/endpoints
 
-        .flex-center {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-        }
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp; /{post-id} </h3>
+                        <script src="/js/prettify.js">
 
-        .position-ref {
-            position: relative;
-        }
+                        </script>
+                        <script>
+                            var test = {!! $responses['postid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
-        .top-right {
-            position: absolute;
-            right: 10px;
-            top: 18px;
-        }
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{comment-id} </h3>
+                        <script src="/js/prettify.js">
 
-        .content {
-            text-align: center;
-        }
+                        </script>
+                        <script>
+                            var test = {!! $responses['commentid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
-        .title {
-            font-size: 84px;
-        }
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{group-id} </h3>
+                        <script src="/js/prettify.js">
 
-        .links > a {
-            color: #636b6f;
-            padding: 0 25px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: .1rem;
-            text-decoration: none;
-            text-transform: uppercase;
-        }
+                        </script>
+                        <script>
+                            var test = {!! $responses['groupid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
-        .m-b-md {
-            margin-bottom: 30px;
-        }
-    </style>
-</head>
-<body>
-<div class="flex-center position-ref full-height">
-    @if (Route::has('login'))
-        <div class="top-right links">
-            @if (Auth::check())
-                <a href="{{ url('/home') }}">Home</a>
-            @else
-                <a href="{{ url('/login') }}">Login</a>
-                <a href="{{ url('/register') }}">Register</a>
-            @endif
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{group-id}/members </h3>
+                        <script src="/js/prettify.js">
 
-        </div>
-    @endif
+                        </script>
+                        <script>
+                            var test = {!! $responses['groupid_members'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
-    <div class="content">
-        <div class="title m-b-md">
-            Laravel
-        </div>
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{object-id}/likes </h3>
+                        <script src="/js/prettify.js">
 
-        <div class="links">
-            <a href="https://laravel.com/docs">Documentation</a>
-            <a href="https://laracasts.com">Laracasts</a>
-            <a href="https://laravel-news.com">News</a>
-            <a href="https://forge.laravel.com">Forge</a>
-            <a href="https://github.com/laravel/laravel">GitHub</a>
+                        </script>
+                        <script>
+                            var test = {!! $responses['objectid_likes'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
+
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{group-id}/feed </h3>
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['groupid_feed'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
+
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{work-experience-id} </h3>
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['workexperienceid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
+
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{education-experience-id} </h3>
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['educationexperienceid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
+
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id} </h3>
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['userid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
+
+
+
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{offer_id}  </h3>
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['offerid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-</body>
-</html>
+
+@endsection
