@@ -18,7 +18,7 @@ class AuthController extends Controller
 
     protected $smServiceProvider;
     protected $userService;
-    private const NOLOGIN = 'nologin';
+    const NOLOGIN = 'nologin';
 
 
     /**
