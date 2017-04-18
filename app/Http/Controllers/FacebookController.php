@@ -68,6 +68,8 @@ class FacebookController extends Controller
         $promises = [
             'userid' => $client->getAsync($fbUserId . '?access_token=' . $accessToken),
             'friends'   => $client->getAsync($fbUserId . '/friends' . '?access_token=' . $accessToken),
+            'groups'   => $client->getAsync($fbUserId . '/groups' . '?access_token=' . $accessToken),
+            'posts'   => $client->getAsync($fbUserId . '/posts' . '?access_token=' . $accessToken),
             //that's all for now folks
         ];
 
@@ -76,8 +78,10 @@ class FacebookController extends Controller
         $responses = array(
             'userid_friends' => (string)$results['friends']['value']->getBody(),
             'postid' => self::mockDataHead . 'postid'. self::mockData,
+            'posts' => (string)$results['posts']['value']->getBody(),
             'commentid' => self::mockDataHead . 'commentid'. self::mockData,
-            'groupid' => self::mockDataHead . 'groupid'. self::mockData,
+            'groups' => (string)$results['groups']['value']->getBody(),
+            'groupid' => self::mockDataHead . 'groups'. self::mockData,
             'groupid_members' => self::mockDataHead . 'groupid_members'. self::mockData,
             'objectid_likes' => self::mockDataHead . 'objectid_likes'. self::mockData,
             'groupid_feed' => self::mockDataHead . 'groupid_feed'. self::mockData,
