@@ -44,9 +44,6 @@
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; user/self/media/liked </h3>
                         @include('dummy')
 
-                        <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /media/media-id/ </h3>
-                        @include('dummy')
-
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /media/media-id/likes </h3>
                         @include('dummy')
 
