@@ -54,6 +54,7 @@ class InstagramController extends Controller
      */
     public function index($instUserId = null, $accessToken = null){
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::INSTAGRAM);
+        $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $client = new Client(['base_uri' => 'https://api.instagram.com']);
 
         $instUserId = $snsProfile->provider_user_id;
@@ -92,7 +93,7 @@ class InstagramController extends Controller
         $responses['locations_locationid'] = 'Need location ID';
         $responses['locations_locationid_media_recent'] = 'Need location ID';
 
-        return view('instagram', compact('responses'));
+        return view('instagram', compact('responses', 'accounts'));
     }
 
 
