@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Services\SMService;
 use App\Services\UserService;
-use App\User;
 use Auth;
 use config\constants\SocialProvidersEnum;
 use Illuminate\Support\Facades\Redirect;
-use Laravel\Socialite\AbstractUser;
 use Request;
 use Socialite;
 
@@ -57,7 +55,7 @@ class AuthController extends Controller
                 $user = Socialite::driver($oauthProvider)->user();
 
                 $authUser = $this->smServiceProvider->findOrCreateUser($user, $oauthProvider);
-                $this->updateUserSNSToken($user, $authUser);
+                $this->userService->updateUserSNSToken($user, $authUser, $oauthProvider);
 
                 Auth::login($authUser, true);
                 $this->userService->setCurrentSNSProvider($oauthProvider);
@@ -75,7 +73,7 @@ class AuthController extends Controller
 
                 $linkedUser = $this->smServiceProvider->linkProviderProfile($user, $oauthProvider);
                 if($linkedUser){
-                    $this->updateUserSNSToken($user, Auth::user());
+                    $this->userService->updateUserSNSToken($user, Auth::user(), $oauthProvider);
                     Request::session()->flash('alert-success', 'Profile linked');
                 }
                 else {
@@ -113,10 +111,5 @@ class AuthController extends Controller
             $oauthProvider = str_replace(self::NOLOGIN, '', $oauthProvider);
         }
         return $oauthProvider;
-    }
-
-    private function updateUserSNSToken(AbstractUser $user, User $authUser){
-        $authUser->snsProfile->access_token = $user->token;
-        $this->userService->updateUser($authUser);
     }
 }

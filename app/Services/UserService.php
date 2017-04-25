@@ -5,6 +5,7 @@ namespace app\Services;
 use App\ProviderUserProfile;
 use App\User;
 use DB;
+use Laravel\Socialite\AbstractUser;
 
 class UserService
 {
@@ -47,6 +48,22 @@ class UserService
         })
             ->where('user_id', $id)
             ->first();
+    }
+
+    public function getUserProviderProfileByProviderId($pid, $oauthProvider){
+        return ProviderUserProfile::whereHas('providerName' , function($query) use ($oauthProvider){
+            $query->where('name', $oauthProvider);
+        })
+            ->where('provider_user_id', $pid)
+            ->first();
+    }
+
+    //TODO add helper function for current user
+    public function updateUserSNSToken(AbstractUser $user, User $authUser, string $oauthProvider){
+
+        $profile = $this->getUserProviderProfileByProviderId($user->getId(), $oauthProvider);
+        $profile->access_token = $user->token;
+        $this->updateProviderUserProfile($profile);
     }
 
     public function updateUser(User $user){
