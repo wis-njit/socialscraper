@@ -60,7 +60,7 @@ class AuthController extends Controller
                 $this->updateUserSNSToken($user, $authUser);
 
                 Auth::login($authUser, true);
-                $this->setCurrentProvider($oauthProvider);
+                $this->userService->setCurrentSNSProvider($oauthProvider);
 
                 if($oauthProvider == SocialProvidersEnum::INSTAGRAM){
                     //flash & redirect to email entry
@@ -113,11 +113,6 @@ class AuthController extends Controller
             $oauthProvider = str_replace(self::NOLOGIN, '', $oauthProvider);
         }
         return $oauthProvider;
-    }
-
-    private function setCurrentProvider($oauthProvider){
-        session(['currentProvider' => $oauthProvider]);
-
     }
 
     private function updateUserSNSToken(AbstractUser $user, User $authUser){

@@ -19,7 +19,7 @@ class ProfileController extends Controller
     public function profile()
     {
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
-        $currentProvider = session('currentProvider');
+        $currentProvider = $this->userService->getCurrentSNSProvider();
 
         return view('profile', compact('accounts', 'currentProvider'));
     }

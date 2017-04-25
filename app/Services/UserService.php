@@ -53,4 +53,12 @@ class UserService
             ->first();
     }
 
+    public function setCurrentSNSProvider(string $oauthProvider){
+        session(['currentProvider' => $oauthProvider]);
+    }
+
+    public function getCurrentSNSProvider(){
+        return session('currentProvider');
+    }
+
 }
