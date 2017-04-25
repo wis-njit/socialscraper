@@ -12,28 +12,36 @@
                 <div class="panel panel-default">
                     <div class="row">
                         <div class="panel-heading text-center">
-                            <a class="col-md-4" href="{{ url('/user/facebook') }}">Facebook Graph API</a>
-                            <a class="col-md-4" href="{{ url('/user/instagram') }}">Instagram API</a>
-                            <a class="col-md-4" href="{{ url('/user/twitter') }}">Twitter API</a>
+                            @foreach($accounts as $account)
+
+                                @if($account->name !== 'google')
+                                    @if($account->active === 1)
+                                        <a class="col-md-4" href="{{ url('/user/' . $account->name) }}">{{ucfirst($account->name)}} API</a>
+                                    @else
+                                        <a href="{{url('/user/profile')}}" class="col-md-4"> {{ucfirst($account->name)}} API Not available </a>
+                                    @endif
+
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                     <div class="panel-heading text-center">Facebook</div>
                     <div class="panel-body">
-<<<<<<< HEAD
+
                       <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friendlists </h3>
                         <script src="/js/prettify.js">
 
                         </script>
                         <script>
-                            var test = {!! $responses['userid_friendlists'] !!};
+                            var test = {!! $responses['userid_friends'] !!};
                             var jsonPretty = JSON.stringify(test, undefined, 4);
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
-=======
+
                       <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
                         @include('dummy')
->>>>>>> refs/remotes/origin/endpoints
+
 
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp; /{post-id} </h3>
                         <script src="/js/prettify.js">

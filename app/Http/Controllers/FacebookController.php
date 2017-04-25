@@ -60,6 +60,7 @@ class FacebookController extends Controller
      */
     public function index($fbUserId = null, $accessToken = null){
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::FACEBOOK);
+        $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $client = new Client(['base_uri' => 'https://graph.facebook.com/']);
 
         $fbUserId = $snsProfile->provider_user_id;
@@ -90,7 +91,7 @@ class FacebookController extends Controller
             'userid' => (string)$results['userid']['value']->getBody(),
             'offerid' => self::mockDataHead . 'offerid'. self::mockData
         );
-        return view('facebook', compact('responses'));
+        return view('facebook', compact('responses', 'accounts'));
     }
 
 }
