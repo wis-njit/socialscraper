@@ -41,16 +41,20 @@ class UserService
             ->delete();
     }
 
-    public function updateUser(User $user){
-        $user->save();
-    }
-
     public function getUserProviderProfile($id, $oauthProvider){
         return ProviderUserProfile::whereHas('providerName' , function($query) use ($oauthProvider){
             $query->where('name', $oauthProvider);
         })
             ->where('user_id', $id)
             ->first();
+    }
+
+    public function updateUser(User $user){
+        $user->save();
+    }
+
+    public function updateProviderUserProfile(ProviderUserProfile $profile){
+        $profile->save();
     }
 
     public function setCurrentSNSProvider(string $oauthProvider){
