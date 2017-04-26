@@ -10,7 +10,8 @@
         "laravel/socialite": "^3.0",
         "laravel/tinker": "~1.0",
         "socialiteproviders/instagram": "^3.0",
-        "tcg/voyager": "^0.11.2"
+        "tcg/voyager": "^0.11.2",
+        "guzzlehttp/oauth-subscriber": "0.3.*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
