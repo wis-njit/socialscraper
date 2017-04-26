@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Subscriber\Oauth\Oauth1;
 use App\Services\SMService;
 use App\Services\UserService;
 use Auth;
@@ -53,19 +55,32 @@ class TwitterController extends Controller
     }
 
 
-    public function index($twitUserId = null, $accessToken = null){
+    public function index($twitUserId = null, $accessToken = null, $accessTokenSecret = null){
 
 
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::TWITTER);
         $twitUserId = $snsProfile->provider_user_id;
         $accessToken = $snsProfile->access_token;
+        $accessTokenSecret = $snsProfile->access_token_key;
 
-        $client = new Client(['base_uri' => 'https://api.twitter.com/',
-            'headers' => ['Authorization' => 'Bearer '. base64_encode($accessToken)]]);
+        $stack = HandlerStack::create();
 
+        $middleware = new Oauth1([
+            'consumer_key'    => env('TWITTER_APP_ID'),
+            'consumer_secret' => env('TWITTER_APP_SECRET'),
+            'token'           => $accessToken,
+            'token_secret'    => $accessTokenSecret
+        ]);
+        $stack->push($middleware);
+
+        $client = new Client([
+            'base_uri' => 'https://api.twitter.com/1.1/',
+            'handler' => $stack,
+            'auth' => 'oauth'
+        ]);
 
         $promises = [
-            'users_show' => $client->getAsync('/1.1/users/show.json' . '?user_id=' . $twitUserId),
+            'users_show' => $client->getAsync('users/show.json' . '?user_id=' . $twitUserId),
 
             //more later
         ];
