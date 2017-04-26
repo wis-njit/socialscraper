@@ -130,12 +130,14 @@ class SMService
      */
     private function createProviderProfile($user, $oauthProvider)
     {
+
         $pup = new ProviderUserProfile();
         $pup->provider_type_id = Provider::getIdFromName($oauthProvider);
         $pup->email = $user->email;
         $pup->name = $user->name;
         $pup->provider_user_id = $user->id;
         $pup->access_token = $user->token;
+        $pup->access_token_key = isset($user->tokenSecret) ? $user->tokenSecret : '';
         return $pup;
     }
 }

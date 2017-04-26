@@ -63,6 +63,7 @@ class UserService
 
         $profile = $this->getUserProviderProfileByProviderId($user->getId(), $oauthProvider);
         $profile->access_token = $user->token;
+        $profile->access_token_key = isset($user->tokenSecret) ? $user->tokenSecret : '';
         $this->updateProviderUserProfile($profile);
     }
 
