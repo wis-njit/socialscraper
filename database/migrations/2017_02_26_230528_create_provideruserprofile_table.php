@@ -23,6 +23,7 @@ class CreateProviderUserProfileTable extends Migration
             $table->string('email')->nullable();
             $table->string('name')->nullable();
             $table->string('access_token')->nullable();
+            $table->string('access_token_key')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
