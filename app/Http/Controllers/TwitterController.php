@@ -62,7 +62,7 @@ class TwitterController extends Controller
         $twitUserId = $snsProfile->provider_user_id;
         $accessToken = $snsProfile->access_token;
         $accessTokenSecret = $snsProfile->access_token_key;
-
+        $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $stack = HandlerStack::create();
 
         $middleware = new Oauth1([
@@ -117,7 +117,7 @@ class TwitterController extends Controller
             }
         }
 
-        return view('twitter', compact('responses'));
+        return view('twitter', compact('responses', 'accounts'));
     }
 
 }
