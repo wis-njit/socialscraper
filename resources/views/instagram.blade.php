@@ -29,28 +29,77 @@
                     <div class="panel-heading text-center">Instagram</div>
                     <div class="panel-body">
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self/follows </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_self_follows'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self/followed-by </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_self_followedby'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self/requested-by </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_self_requestedby'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/user-id/relationship </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_userid_relationship'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_self'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/user-id </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_userid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /media/media-id </h3>
                         @include('dummy')
 
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; user/self/media/liked </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_self_media_liked'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /media/media-id/likes </h3>
                         @include('dummy')
