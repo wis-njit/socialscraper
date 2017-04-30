@@ -12,9 +12,17 @@
                 <div class="panel panel-default">
                     <div class="row">
                         <div class="panel-heading text-center">
-                            <a class="col-md-4" href="{{ url('/user/facebook') }}">Facebook Graph API</a>
-                            <a class="col-md-4" href="{{ url('/user/instagram') }}">Instagram API</a>
-                            <a class="col-md-4" href="{{ url('/user/twitter') }}">Twitter API</a>
+                            @foreach($accounts as $account)
+
+                                @if($account->name !== 'google')
+                                    @if($account->active === 1)
+                                        <a class="col-md-4" href="{{ url('/user/' . $account->name) }}">{{ucfirst($account->name)}} API</a>
+                                    @else
+                                        <a href="{{url('/user/profile')}}" class="col-md-4"> {{ucfirst($account->name)}} API Not available </a>
+                                    @endif
+
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                     <div class="panel-heading text-center">Twitter</div>
