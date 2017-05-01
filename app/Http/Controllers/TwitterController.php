@@ -81,24 +81,32 @@ class TwitterController extends Controller
 
         $promises = [
             'users_show' => $client->getAsync('users/show.json' . '?user_id=' . $twitUserId),
-
-            //more later
+            'users_lookup' => $client->getAsync('users/lookup.json' . '?user_id=' . $twitUserId),
+            'search_tweets' => $client->getAsync('search/tweets.json' . '?q=' . urlencode('searched text')),
+            'followers_ids' => $client->getAsync('followers/ids.json' . '?user_id=' . $twitUserId),
+            'geo_search' => $client->getAsync('geo/search.json' . '?ip=172.56.132.25'),
+            'friendships_lookup' => $client->getAsync('friendships/lookup.json' . '?user_id=' . $twitUserId),
+            'friendships_show' => $client->getAsync('friendships/show.json' . '?target_id=' . $twitUserId),
+            'geo_id_placeid' => $client->getAsync('geo/id/' . '7238f93a3e899af6' . '.json'),
+            'lists_memberships' => $client->getAsync('lists/memberships.json' . '?user_id=' . $twitUserId),
+            'lists_show' => $client->getAsync('lists/show.json' . '?owner_id=' . $twitUserId . '&list_id=' . '0'),
+            'lists_statuses' => $client->getAsync('lists/show.json' . '?owner_id=' . $twitUserId . '&list_id=' . '0')
         ];
 
         $results = Promise\settle($promises)->wait();
 
         $responses = array(
             //'users_show' => self::mockDataHead . 'users_show'. self::mockData,
-            'users_lookup' => self::mockDataHead . 'users_lookup'. self::mockData,
-            'search_tweets' => self::mockDataHead . 'search_tweets'. self::mockData,
-            'followers_ids' => self::mockDataHead . 'followers_ids'. self::mockData,
-            'geo_search' => self::mockDataHead . 'geo_search'. self::mockData,
+            //'users_lookup' => self::mockDataHead . 'users_lookup'. self::mockData,
+            //'search_tweets' => self::mockDataHead . 'search_tweets'. self::mockData,
+            //'followers_ids' => self::mockDataHead . 'followers_ids'. self::mockData,
+            //'geo_search' => self::mockDataHead . 'geo_search'. self::mockData,
             'users_userid' => self::mockDataHead . 'users_userid'. self::mockData,
-            'friendships_lookup' => self::mockDataHead . 'friendships_lookup'. self::mockData,
-            'friendships_show' => self::mockDataHead . 'friendships_show'. self::mockData,
-            'geo_id_placeid' => self::mockDataHead . 'geo_id_placeid'. self::mockData,
-            'lists_memberships' => self::mockDataHead . 'lists_memberships'. self::mockData,
-            'lists_show' => self::mockDataHead . 'lists_show'. self::mockData,
+            //'friendships_lookup' => self::mockDataHead . 'friendships_lookup'. self::mockData,
+            //'friendships_show' => self::mockDataHead . 'friendships_show'. self::mockData,
+            //'geo_id_placeid' => self::mockDataHead . 'geo_id_placeid'. self::mockData,
+            //'lists_memberships' => self::mockDataHead . 'lists_memberships'. self::mockData,
+            //'lists_show' => self::mockDataHead . 'lists_show'. self::mockData,
             'lists_statuses' => self::mockDataHead . 'lists_statuses'. self::mockData,
             'trends_available' => self::mockDataHead . 'trends_available'. self::mockData,
             'trends_closest' => self::mockDataHead . 'trends_closest'. self::mockData,
