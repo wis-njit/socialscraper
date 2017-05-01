@@ -43,9 +43,11 @@ class FacebookController extends Controller
                        ]
                     }';
 
+
     protected $smServiceProvider;
     protected $userService;
 
+    public $name = "";
     public function __construct(SMService $smsProvider, UserService $userService)
     {
         $this->middleware('auth');
@@ -91,7 +93,32 @@ class FacebookController extends Controller
             'userid' => (string)$results['userid']['value']->getBody(),
             'offerid' => self::mockDataHead . 'offerid'. self::mockData
         );
-        return view('facebook', compact('responses', 'accounts'));
+        return view('facebook', compact('responses', 'accounts', 'name'));
+    }
+
+    /**
+     * POST to a facebook test account to update the information
+     *
+     *
+     */
+    public function updateUserInfo(Request $request){
+        $test_user_id = $request->get('test_user_id');
+        echo $test_user_id;
+
+        $name = $request->get('name');
+        echo $name;
+
+        $password = $request->get('password');
+        echo $password;
+    }
+
+    /**
+     * POST to a facebook test account to update the information
+     *
+     *
+     */
+    public function friendRequest(Request $request){
+
     }
 
 }

@@ -39,3 +39,15 @@ Route::get('/user/instagram', 'InstagramController@index');
 Route::get('/user/twitter', 'TwitterController@index');
 
 Route::get('/user/facebookapi', 'FacebookApiController@runQueries');
+
+Route::post('/user/facebook/updateuserinfo', 'FacebookController@updateUserInfo');
+
+Route::post('/user/facebook/friendRequest', 'FacebookController@friendRequest');
+
+Route::post('/user/twitter/updatestatus', 'TwitterController@updateStatus');
+
+Route::post('/user/twitter/updateaccountstatus', 'TwitterController@updateAccountStatus');
+
+Route::post('/user/instagram/modifyrelationship', 'InstagramController@modifyRelationship');
+
+Route::post('/user/instagram/like', 'InstagramController@like');

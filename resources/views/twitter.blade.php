@@ -26,8 +26,164 @@
                         </div>
                     </div>
                     <div class="panel-heading text-center">Twitter</div>
-
                     <div class="panel-body">
+                        <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/account/update_profile</h3>
+                        {!! Form::open(array('action' => 'TwitterController@updateAccountStatus')) !!}
+                        {!! Form::token() !!}
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('name', 'Parameter: {name}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('name','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('url', 'Parameter: {url}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('url','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('location', 'Parameter: {location}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('location','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('description', 'Parameter: {description}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('description','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('profile_link_color', 'Parameter: {profile_link_color}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('profile_link_color','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('include_entities', 'Parameter: {include_entities}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('include_entities','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('skip_status', 'Parameter: {skip_status}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('skip_status','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ Form::submit('Run Query', ['id' => 'btn-submit', 'class' => 'btn btn-info pull-left' ]) }}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1> Results</h1>
+                            </div>
+                        </div>
+
+                        <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/statuses/update </h3>
+                        {!! Form::open(array('action' => 'TwitterController@updateStatus')) !!}
+                        {!! Form::token() !!}
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('status', 'Parameter: {status}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('status','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('in_reply_to_status_id', 'Parameter: {in_reply_to_status_id}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('in_reply_to_status_id','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('possibly_sensitive', 'Parameter: {possibly_sensitive}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('possibly_sensitive','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('lat', 'Parameter: {lat}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('lat','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('long', 'Parameter: {long}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('long','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('place_id', 'Parameter: {place_id}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('place_id','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('display_coordinates', 'Parameter: {display_coordinates}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('display_coordinates','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('trim_user', 'Parameter: {trim_user}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('trim_user','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                {!! Form::label('media_ids', 'Parameter: {media_ids}', ['class' => 'control-label pull-left']) !!}
+                            </div>
+                            <div class="col-md-8">
+                                {!! Form::text('media_ids','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ Form::submit('Run Query', ['id' => 'btn-submit', 'class' => 'btn btn-info pull-left' ]) }}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1> Results</h1>
+                            </div>
+                        </div>
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; users/show </h3>
                         @include('dummy')
 
