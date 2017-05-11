@@ -9,12 +9,14 @@
 
                 <div class="panel-body">
                     <ul class="list-group">
+                        <!-- Home page once user has logged in.  -->
                         @foreach($accounts as $account)
-
+                            <!-- Display a link to the API page linked SNS -->
                             @if($account->name !== 'google')
                                 @if($account->active === 1)
                                     <li class="list-group-item"><a href="{{ url('/user/' . $account->name) }}">{{ucfirst($account->name)}} API</a></li>
                                 @else
+                                    <!-- Unlinked pages appear as Not Available -->
                                     <li class="list-group-item">{{ucfirst($account->name)}} API <a class="pull-right" href="{{url('/user/profile')}}">Not available</a></li>
                                 @endif
 

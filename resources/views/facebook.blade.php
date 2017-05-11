@@ -1,17 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-
-    <!-- BEGIN DOCUMENTATION -->
-
     <!--
-         Template for Facebook API calls
+         Template for Facebook API calls (/user/Facebook)
          Contains various GETs and POST for the Facebook API
          User must have linked their SNS account to SS (Social Scraper)
          on the dashboard page (lvh.me:8000/home)
      -->
 
-    <!-- END DOCUMENTATION -->
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -23,15 +19,10 @@
 
                                 @if($account->name !== 'google')
                                     @if($account->active === 1)
-                                        <!--
-                                            Display a link to the API page for another SNS in SS
-                                        -->
+                                        <!-- Display a link to the API page for another SNS in SS -->
                                         <a class="col-md-4" href="{{ url('/user/' . $account->name) }}">{{ucfirst($account->name)}} API</a>
                                     @else
-                                        <!--
-                                            If the user has not authorized their particular account for a SNS (Social Netowrking Service
-                                            , That SNS will appear as SNSNAME: Not Available
-                                        -->
+                                        <!-- Appears as Not Available for Unlinked SNS -->
                                         <a href="{{url('/user/profile')}}" class="col-md-4"> {{ucfirst($account->name)}} API Not available </a>
                                     @endif
 
@@ -39,7 +30,8 @@
                             @endforeach
                         </div>
                     </div>
-                    <!-- BEGIN POST FORMS
+                    <!--
+                        BEGIN POST REQ
                         Currently in development:
                         Form to make a post to Facebook API.
                         Results are displayed in the div below
@@ -148,12 +140,12 @@
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
-
+                        <!-- Gets the current user's friends -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
                         <!-- dummy JSON -->
                         @include('dummy')
 
-
+                        <!-- Gets a information about a post -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp; /{post-id} </h3>
                         <script src="/js/prettify.js">
 
@@ -164,6 +156,7 @@
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
+                        <!-- Gets a comment by its comment ID -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{comment-id} </h3>
                         <script src="/js/prettify.js">
 
@@ -174,6 +167,7 @@
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
+                        <!-- Gets a group by its group-id -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{group-id} </h3>
                         <script src="/js/prettify.js">
 
@@ -184,6 +178,7 @@
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
+                        <!-- Gets the members of a group by its ID -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{group-id}/members </h3>
                         <script src="/js/prettify.js">
 
@@ -194,6 +189,10 @@
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
+                        <!--
+                            This reference describes the /likes edge that is common to multiple Graph API nodes.
+                            The structure and operations are the same for each node.
+                        -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{object-id}/likes </h3>
                         <script src="/js/prettify.js">
 
@@ -214,6 +213,7 @@
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
+                        <!-- Get a user's work experience -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{work-experience-id} </h3>
                         <script src="/js/prettify.js">
 
@@ -224,6 +224,7 @@
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
+                        <!-- Get a user's education experience -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{education-experience-id} </h3>
                         <script src="/js/prettify.js">
 
@@ -234,6 +235,7 @@
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
+                        <!-- Get general information about a user -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id} </h3>
                         <script src="/js/prettify.js">
 
