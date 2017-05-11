@@ -90,7 +90,7 @@ class TwitterController extends Controller
             'geo_id_placeid' => $client->getAsync('geo/id/' . '7238f93a3e899af6' . '.json'),
             'lists_memberships' => $client->getAsync('lists/memberships.json' . '?user_id=' . $twitUserId),
             'lists_show' => $client->getAsync('lists/show.json' . '?owner_id=' . $twitUserId . '&list_id=' . '0'),
-            'lists_statuses' => $client->getAsync('lists/show.json' . '?owner_id=' . $twitUserId . '&list_id=' . '0')
+
         ];
 
         $results = Promise\settle($promises)->wait();
