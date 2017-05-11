@@ -7,6 +7,7 @@ use App\Services\SMService;
 use App\Services\UserService;
 use Auth;
 use Config\Constants\SocialProvidersEnum;
+use GuzzleHttp\Psr7\Request;
 
 class InstagramController extends Controller
 {
@@ -95,6 +96,18 @@ class InstagramController extends Controller
 
         return view('instagram', compact('responses', 'accounts'));
     }
+    /*
+     * Modify the relationship between the current user and the target user.
+     * You need to include an action parameter to
+     * specify the relationship action you want to perform.
+     * Valid actions are: 'follow', 'unfollow' 'approve' or 'ignore'.
+     */
+    public function modifyRelationship(Request $request){
 
+    }
+    //Set a like on this media by the currently authenticated user.
+    public function like(Request $request){
+
+    }
 
 }

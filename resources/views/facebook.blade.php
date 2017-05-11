@@ -27,8 +27,77 @@
                     </div>
                     <div class="panel-heading text-center">Facebook</div>
                     <div class="panel-body">
+                        <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/{test-user-id}/ </h3>
+                        {!! Form::open(array('action' => 'FacebookController@updateUserInfo')) !!}
+                        {!! Form::token() !!}
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('test_user_id', 'Parameter: {test-user-id}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('test_user_id','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('name', 'Parameter: name', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('name','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('password', 'Parameter: password', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('password','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ Form::submit('Run Query', ['id' => 'btn-submit', 'class' => 'btn btn-info pull-left' ]) }}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1> Results</h1>
+                            </div>
+                        </div>
 
-                      <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friendlists </h3>
+                        <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/{test-user-1}/friends/{test-user-2} </h3>
+                        {!! Form::open(array('action' => 'FacebookController@friendRequest')) !!}
+                        {!! Form::token() !!}
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('test_user_1', 'Parameter: {test-user-1}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('test_user_1','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('test_user_2', 'Parameter: test-user-2', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('test_user_2','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ Form::submit('Run Query', ['id' => 'btn-submit', 'class' => 'btn btn-info pull-left' ]) }}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1> Results</h1>
+                            </div>
+                        </div>
+
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friendlists </h3>
                         <script src="/js/prettify.js">
 
                         </script>
@@ -39,7 +108,7 @@
                         </script>
 
 
-                      <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
                         @include('dummy')
 
 

@@ -128,4 +128,11 @@ class TwitterController extends Controller
         return view('twitter', compact('responses', 'accounts'));
     }
 
+    public function updateStatus(Request $request){
+
+    }
+
+    public function updateAccountStatus(Request $request){
+
+    }
 }

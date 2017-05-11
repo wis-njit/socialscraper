@@ -28,6 +28,50 @@
                     </div>
                     <div class="panel-heading text-center">Instagram</div>
                     <div class="panel-body">
+                        <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/media/{media-id}/likes </h3>
+                        {!! Form::open(array('action' => 'InstagramController@like')) !!}
+                        {!! Form::token() !!}
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('media_id', 'Parameter: {media-id}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('media_id','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ Form::submit('Run Query', ['id' => 'btn-submit', 'class' => 'btn btn-info pull-left' ]) }}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1> Results</h1>
+                            </div>
+                        </div>
+                        <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/users/{user-id}/relationship </h3>
+                        {!! Form::open(array('action' => 'InstagramController@modifyRelationship')) !!}
+                        {!! Form::token() !!}
+                        <div class="row">
+                            <div class="col-md-2">
+                                {!! Form::label('user_id', 'Parameter: {user-id}', ['class' => 'control-label pull-right']) !!}
+                            </div>
+                            <div class="col-md-10">
+                                {!! Form::text('user_id','',['class' => 'form-control pull-left']) !!}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{ Form::submit('Run Query', ['id' => 'btn-submit', 'class' => 'btn btn-info pull-left' ]) }}
+                                {{ Form::close() }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h1> Results</h1>
+                            </div>
+                        </div>
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self/follows </h3>
                         <script src="/js/prettify.js">
 
