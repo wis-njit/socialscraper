@@ -2,7 +2,7 @@
 
 @section('content')
     <!--
-         Template for Facebook API calls (/user/Facebook)
+         Template for Facebook API calls (/user/facebook)
          Contains various GETs and POST for the Facebook API
          User must have linked their SNS account to SS (Social Scraper)
          on the dashboard page (lvh.me:8000/home)
