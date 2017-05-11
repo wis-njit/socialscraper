@@ -3,8 +3,14 @@
 @section('content')
 
     <!-- BEGIN DOCUMENTATION -->
+
     <!--
-                           -->
+         Template for Facebook API calls
+         Contains various GETs and POST for the Facebook API
+         User must have linked their SNS account to SS (Social Scraper)
+         on the dashboard page (lvh.me:8000/home)
+     -->
+
     <!-- END DOCUMENTATION -->
     <div class="container">
         <div class="row">
@@ -12,12 +18,20 @@
                 <div class="panel panel-default">
                     <div class="row">
                         <div class="panel-heading text-center">
+                            <!-- $accounts is passed to this view from FacebookController.php -->
                             @foreach($accounts as $account)
 
                                 @if($account->name !== 'google')
                                     @if($account->active === 1)
+                                        <!--
+                                            Display a link to the API page for another SNS in SS
+                                        -->
                                         <a class="col-md-4" href="{{ url('/user/' . $account->name) }}">{{ucfirst($account->name)}} API</a>
                                     @else
+                                        <!--
+                                            If the user has not authorized their particular account for a SNS (Social Netowrking Service
+                                            , That SNS will appear as SNSNAME: Not Available
+                                        -->
                                         <a href="{{url('/user/profile')}}" class="col-md-4"> {{ucfirst($account->name)}} API Not available </a>
                                     @endif
 
@@ -25,9 +39,21 @@
                             @endforeach
                         </div>
                     </div>
+                    <!-- BEGIN POST FORMS
+                        Currently in development:
+                        Form to make a post to Facebook API.
+                        Results are displayed in the div below
+                        Test accounts must be created through the Facebook Developers page.
+                    -->
+
                     <div class="panel-heading text-center">Facebook</div>
                     <div class="panel-body">
                         <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/{test-user-id}/ </h3>
+                        <!--
+                            Makes a POST to Facebook API to update the userInfo for a test User.
+                            Cannot use real user accounts until the application passes Facebook's
+                            Application Process.
+                        -->
                         {!! Form::open(array('action' => 'FacebookController@updateUserInfo')) !!}
                         {!! Form::token() !!}
                         <div class="row">
@@ -67,6 +93,9 @@
                         </div>
 
                         <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/{test-user-1}/friends/{test-user-2} </h3>
+                        <!--
+                            Makes a POST to Facebook API to send a friend request from test-user-1 to test-user-2
+                        -->
                         {!! Form::open(array('action' => 'FacebookController@friendRequest')) !!}
                         {!! Form::token() !!}
                         <div class="row">
@@ -96,11 +125,23 @@
                                 <h1> Results</h1>
                             </div>
                         </div>
+                        <!-- END POST FORMS -->
 
+                        <!-- BEGIN GET FORMS -->
+                        <!--
+                            These GET calls are all made on page load
+                            Various GET calls to Facebook API
+                            Output is displayed with Prettified JSON
+                            Some outputs are spooofed because Facebook does not allow
+                            sandboxed applications to access certain authorization
+                            'scopes'.
+                         -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friendlists </h3>
+                        <!-- Issue: The portion below needs to be implemented in a DRY manner (don't repeat yourself) -->
                         <script src="/js/prettify.js">
 
                         </script>
+                        <!-- Takes a response object and prettifies it, then outputs it as a PRE -->
                         <script>
                             var test = {!! $responses['userid_friends'] !!};
                             var jsonPretty = JSON.stringify(test, undefined, 4);
@@ -109,6 +150,7 @@
 
 
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
+                        <!-- dummy JSON -->
                         @include('dummy')
 
 
