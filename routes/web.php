@@ -38,8 +38,6 @@ Route::get('/user/instagram', 'InstagramController@index');
 
 Route::get('/user/twitter', 'TwitterController@index');
 
-Route::get('/user/facebookapi', 'FacebookApiController@runQueries');
-
 Route::post('/user/facebook/updateuserinfo', 'FacebookController@updateUserInfo');
 
 Route::post('/user/facebook/friendRequest', 'FacebookController@friendRequest');

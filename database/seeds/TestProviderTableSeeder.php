@@ -12,7 +12,7 @@ class TestProviderTableSeeder extends Seeder
      */
     public function run()
     {
-        $providers = ['google', 'facebook', 'twitter', 'instagram'];
+        $providers = ['facebook', 'twitter', 'instagram']; //'google' supported but removed as SNS is not used
 
         foreach ($providers as $provider) {
             Provider::firstOrCreate(['name' => $provider,]);
