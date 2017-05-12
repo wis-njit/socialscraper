@@ -14,6 +14,7 @@ use Config\Constants\SocialProvidersEnum;
 class FacebookController extends Controller
 {
 
+    //Mock data to return to view in the absence of API response
     const mockDataHead = '{"';
     const mockData = ' ":[
                           {
@@ -56,9 +57,17 @@ class FacebookController extends Controller
     }
 
     /**
-     * Show the application dashboard.
+     *Handles the initial Facebook API request from the dashboard
+     * and runs queries against all identified "interesting" endpoints
+     * using the current user's OAuth token in parallel using Guzzle.
+     * A valid token must be available for any call to be successful.
      *
+     *All responses are returned to the view as an associative array
+     * for dissemination.
      *
+     * Passing a Facebook user's provider issued id and and associated
+     * OAuth token will perform queries using it instead of the current
+     * user.
      */
     public function index($fbUserId = null, $accessToken = null){
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::FACEBOOK);
