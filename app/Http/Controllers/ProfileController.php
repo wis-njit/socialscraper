@@ -36,7 +36,8 @@ class ProfileController extends Controller
             }
         }
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
+        $currentProvider = $this->userService->getCurrentSNSProvider();
 
-        return view('profile', compact('accounts'));
+        return view('profile', compact('accounts', 'currentProvider'));
     }
 }
