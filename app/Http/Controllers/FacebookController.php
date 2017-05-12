@@ -68,6 +68,11 @@ class FacebookController extends Controller
      * Passing a Facebook user's provider issued id and and associated
      * OAuth token will perform queries using it instead of the current
      * user.
+     *
+     * @param $fbUserId The provider assigned id
+     * @param $accessToken A valid OAuth token
+     *
+     * @return view
      */
     public function index($fbUserId = null, $accessToken = null){
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::FACEBOOK);
