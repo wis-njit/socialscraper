@@ -5,7 +5,6 @@ namespace app\Services;
 use App\ProviderUserProfile;
 use DB;
 use Laravel\Socialite\AbstractUser;
-use app\User;
 
 /**This service is utilized throughout the application and facilitates functions relevant
  * to current users and their data
@@ -91,7 +90,7 @@ class UserService
      * @param AbstractUser $user
      * @param string $oauthProvider
      */
-    public function updateUserSNSToken(AbstractUser $user, User $authUser, string $oauthProvider){
+    public function updateUserSNSToken(AbstractUser $user, string $oauthProvider){
 
         $profile = $this->getUserProviderProfileByProviderId($user->getId(), $oauthProvider);
         $profile->access_token = $user->token;

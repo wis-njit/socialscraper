@@ -79,7 +79,7 @@ class AuthController extends Controller
                 $user = Socialite::driver($oauthProvider)->user();
 
                 $authUser = $this->smServiceProvider->findOrCreateUser($user, $oauthProvider);
-                $this->userService->updateUserSNSToken($user, $authUser, $oauthProvider);
+                $this->userService->updateUserSNSToken($user, $oauthProvider);
 
                 Auth::login($authUser, true);
                 $this->userService->setCurrentSNSProvider($oauthProvider);
@@ -97,7 +97,7 @@ class AuthController extends Controller
 
                 $linkedUser = $this->smServiceProvider->linkProviderProfile($user, $oauthProvider);
                 if($linkedUser){
-                    $this->userService->updateUserSNSToken($user, Auth::user(), $oauthProvider);
+                    $this->userService->updateUserSNSToken($user, $oauthProvider);
                     Request::session()->flash('alert-success', 'Profile linked');
                 }
                 else {
