@@ -101,7 +101,7 @@ class FacebookController extends Controller
 
         $results = Promise\settle($promises)->wait();
 
-        /**Until we can successfully make a request for and endpoint,
+        /**Until we can successfully make a request for an endpoint,
          * we'll return a mocked JSON response to display in the view
          * as a placeholder
          */
