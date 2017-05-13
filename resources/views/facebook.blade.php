@@ -168,6 +168,17 @@
                         </script>
 
                         <!-- Gets a group by its group-id -->
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/groups </h3>
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['groups'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
+
+                        <!-- Gets a group by its group-id -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{group-id} </h3>
                         <script src="/js/prettify.js">
 
