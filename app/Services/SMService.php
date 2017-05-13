@@ -37,7 +37,7 @@ class SMService
     public function findOrCreateUser(AbstractUser $user, string $oauthProvider)
     {
 
-        $authUser = $this->findUserByProviderProfile($user, $oauthProvider);
+        $authUser = $this->getUserByProviderProfile($user, $oauthProvider);
 
         if ($authUser){
             return $authUser;
@@ -63,7 +63,7 @@ class SMService
             $pup = $this->createProviderProfile($user, $oauthProvider);
         }
 
-        $nUser = $this->findUserByLocalProfile($user);
+        $nUser = $this->getUserByLocalProfile($user);
         //If there's no user found, create one
         if(!$nUser){
             $nUser = new User();
@@ -95,7 +95,7 @@ class SMService
      * @param string $oauthProvider
      * @return User|null
      */
-    private function findUserByProviderProfile(AbstractUser $user, string $oauthProvider)
+    private function getUserByProviderProfile(AbstractUser $user, string $oauthProvider)
     {
         //We will not lookup users' provider data by email as we
         //cannot ensure that the provider is ensuring they own that address
@@ -127,7 +127,7 @@ class SMService
      * @param AbstractUser $user
      * @return User
      */
-    private function findUserByLocalProfile(AbstractUser $user)
+    private function getUserByLocalProfile(AbstractUser $user)
     {
         return User::where('email', $user->email)->first();
     }
