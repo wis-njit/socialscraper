@@ -15,6 +15,7 @@ use Config\Constants\SocialProvidersEnum;
 class TwitterController extends Controller
 {
 
+    //Mock data to return to view in the absence of API response
     const mockDataHead = '{"';
     const mockData = ' ":[
                           {
@@ -44,6 +45,9 @@ class TwitterController extends Controller
                        ]
                     }';
 
+    //The API's base URI on which all requests will be made
+    const URI = 'https://api.twitter.com/1.1/';
+
     protected $smServiceProvider;
     protected $userService;
 
@@ -55,8 +59,26 @@ class TwitterController extends Controller
     }
 
 
+    /**
+     *Handles the initial Twitter API request from the dashboard
+     * and runs queries against all identified "interesting" endpoints
+     * using the current user's OAuth token in parallel using Guzzle.
+     * A valid token must be available for any call to be successful.
+     *
+     *All responses are returned to the view as an associative array
+     * for dissemination.
+     *
+     * Passing a Twitter user's provider issued id and and associated
+     * OAuth token will perform queries using it instead of the current
+     * user.
+     *
+     * @param $twitUserId The provider assigned id
+     * @param $accessToken A valid OAuth token
+     * @param $accessTokenSecret The OAuth1 token's secret
+     *
+     * @return view
+     */
     public function index($twitUserId = null, $accessToken = null, $accessTokenSecret = null){
-
 
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::TWITTER);
         $twitUserId = $snsProfile->provider_user_id;
@@ -65,6 +87,9 @@ class TwitterController extends Controller
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $stack = HandlerStack::create();
 
+        /**Using Guzzle's OAuth1 subscriber, we compose the headers,
+         * parameters, etc needed for the request.
+        */
         $middleware = new Oauth1([
             'consumer_key'    => env('TWITTER_APP_ID'),
             'consumer_secret' => env('TWITTER_APP_SECRET'),
@@ -74,11 +99,18 @@ class TwitterController extends Controller
         $stack->push($middleware);
 
         $client = new Client([
-            'base_uri' => 'https://api.twitter.com/1.1/',
+            'base_uri' => self::URI,
             'handler' => $stack,
             'auth' => 'oauth'
         ]);
 
+        //TODO refactor using URI template
+        /**Use Guzzle to make all requests in parallel and write responses
+         *to an array for reading
+         *
+         * Only endpoints which we've been able to successfully make
+         * requests to are included so far.
+         */
         $promises = [
             'users_show' => $client->getAsync('users/show.json' . '?user_id=' . $twitUserId),
             'users_lookup' => $client->getAsync('users/lookup.json' . '?user_id=' . $twitUserId),
@@ -94,36 +126,20 @@ class TwitterController extends Controller
         ];
 
         $results = Promise\settle($promises)->wait();
+        $responses = $this->mapResponsesToArray($results);
 
-        $responses = array(
-            //'users_show' => self::mockDataHead . 'users_show'. self::mockData,
-            //'users_lookup' => self::mockDataHead . 'users_lookup'. self::mockData,
-            //'search_tweets' => self::mockDataHead . 'search_tweets'. self::mockData,
-            //'followers_ids' => self::mockDataHead . 'followers_ids'. self::mockData,
-            //'geo_search' => self::mockDataHead . 'geo_search'. self::mockData,
-            'users_userid' => self::mockDataHead . 'users_userid'. self::mockData,
-            //'friendships_lookup' => self::mockDataHead . 'friendships_lookup'. self::mockData,
-            //'friendships_show' => self::mockDataHead . 'friendships_show'. self::mockData,
-            //'geo_id_placeid' => self::mockDataHead . 'geo_id_placeid'. self::mockData,
-            //'lists_memberships' => self::mockDataHead . 'lists_memberships'. self::mockData,
-            //'lists_show' => self::mockDataHead . 'lists_show'. self::mockData,
-            'lists_statuses' => self::mockDataHead . 'lists_statuses'. self::mockData,
-            'trends_available' => self::mockDataHead . 'trends_available'. self::mockData,
-            'trends_closest' => self::mockDataHead . 'trends_closest'. self::mockData,
-            'users_search' => self::mockDataHead . 'users_search'. self::mockData,
-            'users_suggestions' => self::mockDataHead . 'users_suggestions'. self::mockData,
-            'users_suggestions_slug_members' => self::mockDataHead . 'users_suggestions_slug_members'. self::mockData,
-            'statuses_usertimeline' => self::mockDataHead . 'statuses_usertimeline'. self::mockData
-        );
-
-        foreach ($results as $key => $value){
-            if($value['state'] === 'fulfilled' && $value['value'] !== null){
-                $responses[$key] = (string)$value['value']->getBody();
-            }
-            else{
-                $responses[$key] = (string)$value['reason']->getMessage();
-            }
-        }
+        /**Until we can successfully make a request for an endpoint,
+         * we'll return a mocked JSON response to display in the view
+         * as a placeholder
+         */
+        $responses['users_userid'] = self::mockDataHead . 'users_userid'. self::mockData;
+        $responses['lists_statuses'] = self::mockDataHead . 'lists_statuses'. self::mockData;
+        $responses['trends_available'] = self::mockDataHead . 'trends_available'. self::mockData;
+        $responses['trends_closest'] = self::mockDataHead . 'trends_closest'. self::mockData;
+        $responses['users_search'] = self::mockDataHead . 'users_search'. self::mockData;
+        $responses['users_suggestions'] = self::mockDataHead . 'users_suggestions'. self::mockData;
+        $responses['users_suggestions_slug_members'] = self::mockDataHead . 'users_suggestions_slug_members'. self::mockData;
+        $responses['statuses_usertimeline'] = self::mockDataHead . 'statuses_usertimeline'. self::mockData;
 
         return view('twitter', compact('responses', 'accounts'));
     }
