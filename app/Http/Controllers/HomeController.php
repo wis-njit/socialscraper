@@ -19,6 +19,9 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
+     * Retrieve all the provider accounts a user has linked to their account
+     * and deliver them to the home page.
+     *
      * @return \Illuminate\Http\Response
      */
     public function index()
