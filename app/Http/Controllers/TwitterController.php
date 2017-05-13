@@ -76,7 +76,7 @@ class TwitterController extends Controller
      * @param $accessToken A valid OAuth token
      * @param $accessTokenSecret The OAuth1 token's secret
      *
-     * @return view
+     * @return \Illuminate\Http\Response
      */
     public function index($twitUserId = null, $accessToken = null, $accessTokenSecret = null){
 

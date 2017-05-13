@@ -69,7 +69,7 @@ class InstagramController extends Controller
      * @param $instUserId The provider assigned id
      * @param $accessToken A valid OAuth token
      *
-     * @return view
+     * @return \Illuminate\Http\Response
      */
     public function index($instUserId = null, $accessToken = null){
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::INSTAGRAM);
