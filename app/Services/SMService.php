@@ -132,24 +132,6 @@ class SMService
         return User::where('email', $user->email)->first();
     }
 
-
-    private function handleGenericProviderData(AbstractUser $user, string $oauthProvider){
-
-        //TODO Refactor into COR handlers
-
-        //Static Google/FB/Twitter
-        if($oauthProvider != SocialProvidersEnum::INSTAGRAM){
-            //Capture specific user data
-        }
-        else if($oauthProvider == SocialProvidersEnum::INSTAGRAM){
-            //Capture specific user data
-        }
-        else{
-            throwException("Provider " . $oauthProvider . " not supported");
-        }
-
-    }
-
     /**
      * Given a returned SNS provider's user account and the provider type
      * link the current user to the existing provider profile by updating the
