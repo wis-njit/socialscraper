@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\Request;
 
 class InstagramController extends Controller
 {
+    //Mock data to return to view in the absence of API response
     const mockDataHead = '{"';
     const mockData = ' ":[
                           {
@@ -39,6 +40,8 @@ class InstagramController extends Controller
                           }
                        ]
                     }';
+    //The API's base URI on which all requests will be made
+    const URI = 'https://api.instagram.com';
 
     protected $smServiceProvider;
     protected $userService;
@@ -51,17 +54,39 @@ class InstagramController extends Controller
     }
 
     /**
-     * Show the Instagram data.
+     *Handles the initial Instagram API request from the dashboard
+     * and runs queries against all identified "interesting" endpoints
+     * using the current user's OAuth token in parallel using Guzzle.
+     * A valid token must be available for any call to be successful.
+     *
+     *All responses are returned to the view as an associative array
+     * for dissemination.
+     *
+     * Passing a Instagram user's provider issued id and and associated
+     * OAuth token will perform queries using it instead of the current
+     * user.
+     *
+     * @param $instUserId The provider assigned id
+     * @param $accessToken A valid OAuth token
+     *
+     * @return view
      */
     public function index($instUserId = null, $accessToken = null){
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::INSTAGRAM);
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
-        $client = new Client(['base_uri' => 'https://api.instagram.com']);
+        $client = new Client(['base_uri' => self::URI]);
 
         $instUserId = $snsProfile->provider_user_id;
         $accessToken = $snsProfile->access_token;
 
         //TODO refactor using URI template
+        /**Use Guzzle to make all requests in parallel and write responses
+         *to an array for reading
+         *
+         * Only endpoints which we've been able to successfully make
+         * requests to are included so far. Limitations are the permissions
+         * configured for test users and the data populated in their accounts.
+         */
         $promises = [
             'users_self' => $client->getAsync('/v1/users/self/' . '?access_token=' . $accessToken),
             'users_userid'   => $client->getAsync('/v1/users/' . $instUserId . '?access_token=' . $accessToken),
@@ -77,18 +102,12 @@ class InstagramController extends Controller
         ];
 
         $results = Promise\settle($promises)->wait();
-        $responses = array();
+        $responses = $this->mapResponsesToArray($results);
 
-        foreach ($results as $key => $value){
-            if($value['state'] === 'fulfilled' && $value['value'] !== null){
-                $responses[$key] = (string)$value['value']->getBody();
-            }
-            else{
-                $responses[$key] = (string)$value['reason']->getMessage();
-            }
-        }
-
-        //Add unimplemented responses for the time being - for display
+        /**Until we can successfully make a request for an endpoint,
+         * we'll return a mocked JSON response to display in the view
+         * as a placeholder
+         */
         $responses['media_mediaid_likes'] = 'Need media ID';
         $responses['media_mediaid'] = 'Need media ID';
         $responses['locations_locationid'] = 'Need location ID';
