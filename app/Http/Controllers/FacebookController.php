@@ -44,6 +44,8 @@ class FacebookController extends Controller
                        ]
                     }';
 
+    //The API's base URI on which all requests will be made
+    const URI = 'https://graph.facebook.com/';
 
     protected $smServiceProvider;
     protected $userService;
@@ -77,36 +79,43 @@ class FacebookController extends Controller
     public function index($fbUserId = null, $accessToken = null){
         $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::FACEBOOK);
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
-        $client = new Client(['base_uri' => 'https://graph.facebook.com/']);
+        $client = new Client(['base_uri' => self::URI]);
 
         $fbUserId = $snsProfile->provider_user_id;
         $accessToken = $snsProfile->access_token;
 
+        //TODO refactor using URI template
+        /**Use Guzzle to make all requests in parallel and write responses
+         *to an array for reading
+         *
+         * Only endpoints which we've been able to successfully make
+         * requests to are included so far. Limitations are the permissions
+         * configured for test users and the data populated in their accounts.
+         */
         $promises = [
             'userid' => $client->getAsync($fbUserId . '?access_token=' . $accessToken),
-            'friends'   => $client->getAsync($fbUserId . '/friends' . '?access_token=' . $accessToken),
+            'userid_friends'   => $client->getAsync($fbUserId . '/friends' . '?access_token=' . $accessToken),
             'groups'   => $client->getAsync($fbUserId . '/groups' . '?access_token=' . $accessToken),
             'posts'   => $client->getAsync($fbUserId . '/posts' . '?access_token=' . $accessToken),
-            //that's all for now folks
         ];
 
         $results = Promise\settle($promises)->wait();
 
-        $responses = array(
-            'userid_friends' => (string)$results['friends']['value']->getBody(),
-            'postid' => self::mockDataHead . 'postid'. self::mockData,
-            'posts' => (string)$results['posts']['value']->getBody(),
-            'commentid' => self::mockDataHead . 'commentid'. self::mockData,
-            'groups' => (string)$results['groups']['value']->getBody(),
-            'groupid' => self::mockDataHead . 'groups'. self::mockData,
-            'groupid_members' => self::mockDataHead . 'groupid_members'. self::mockData,
-            'objectid_likes' => self::mockDataHead . 'objectid_likes'. self::mockData,
-            'groupid_feed' => self::mockDataHead . 'groupid_feed'. self::mockData,
-            'workexperienceid' => self::mockDataHead . 'workexperienceid'. self::mockData,
-            'educationexperienceid' => self::mockDataHead . 'educationexperienceid'. self::mockData,
-            'userid' => (string)$results['userid']['value']->getBody(),
-            'offerid' => self::mockDataHead . 'offerid'. self::mockData
-        );
+        /**Until we can successfully make a request for and endpoint,
+         * we'll return a mocked JSON response to display in the view
+         * as a placeholder
+         */
+        $responses = $this->mapResponsesToArray($results);
+        $responses['postid'] = self::mockDataHead . 'postid'. self::mockData;
+        $responses['commentid'] = self::mockDataHead . 'commentid'. self::mockData;
+        $responses['groupid'] = self::mockDataHead . 'groupid'. self::mockData;
+        $responses['groupid_members'] = self::mockDataHead . 'groupid_members'. self::mockData;
+        $responses['objectid_likes'] = self::mockDataHead . 'objectid_likes'. self::mockData;
+        $responses['groupid_feed'] = self::mockDataHead . 'groupid_feed'. self::mockData;
+        $responses['workexperienceid'] = self::mockDataHead . 'workexperienceid'. self::mockData;
+        $responses['educationexperienceid'] = self::mockDataHead . 'educationexperienceid'. self::mockData;
+        $responses['offerid'] = self::mockDataHead . 'offerid'. self::mockData;
+
         return view('facebook', compact('responses', 'accounts', 'name'));
     }
 
