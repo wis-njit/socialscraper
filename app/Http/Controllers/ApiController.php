@@ -97,6 +97,15 @@ class ApiController extends Controller
         return $this->snsProfile->access_token;
     }
 
+    /**Retrieve the store provider access token key
+     *
+     * @return mixed
+     */
+    protected function getProviderTokenKey(){
+        $this->checkProfile();
+        return $this->snsProfile->access_token_key;
+    }
+
     /**
      *Verify if the ProviderUserProfileObject is populated prior to read
      * and if not, populate it

@@ -12,50 +12,15 @@ use App\Services\UserService;
 use Auth;
 use Config\Constants\SocialProvidersEnum;
 
-class TwitterController extends Controller
+class TwitterController extends ApiController
 {
-
-    //Mock data to return to view in the absence of API response
-    const mockDataHead = '{"';
-    const mockData = ' ":[
-                          {
-                             "id":1,
-                             "first_name":"Raymond",
-                             "last_name":"Ramos",
-                             "email":"rramos0@alexa.com",
-                             "gender":"Male",
-                             "ip_address":"165.64.230.96"
-                          },
-                          {
-                             "id":2,
-                             "first_name":"Mildred",
-                             "last_name":"Wood",
-                             "email":"mwood1@joomla.org",
-                             "gender":"Female",
-                             "ip_address":"110.252.219.18"
-                          },
-                          {
-                             "id":3,
-                             "first_name":"Frances",
-                             "last_name":"Greene",
-                             "email":"fgreene2@free.fr",
-                             "gender":"Female",
-                             "ip_address":"154.145.59.188"
-                          }
-                       ]
-                    }';
 
     //The API's base URI on which all requests will be made
     const URI = 'https://api.twitter.com/1.1/';
 
-    protected $smServiceProvider;
-    protected $userService;
-
-    public function __construct(SMService $smsProvider, UserService $userService)
+    public function __construct(SMService $smProvider, UserService $userService)
     {
-        $this->middleware('auth');
-        $this->smServiceProvider = $smsProvider;
-        $this->userService = $userService;
+        parent::__construct( $smProvider,  $userService, SocialProvidersEnum::TWITTER);
     }
 
 
@@ -80,10 +45,9 @@ class TwitterController extends Controller
      */
     public function index($twitUserId = null, $accessToken = null, $accessTokenSecret = null){
 
-        $snsProfile = $this->userService->getUserProviderProfile(Auth::id(), SocialProvidersEnum::TWITTER);
-        $twitUserId = $snsProfile->provider_user_id;
-        $accessToken = $snsProfile->access_token;
-        $accessTokenSecret = $snsProfile->access_token_key;
+        $twitUserId = $this->getProviderUserId();
+        $accessToken = $this->getProviderToken();
+        $accessTokenSecret = $this->getProviderTokenKey();
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $stack = HandlerStack::create();
 
