@@ -106,48 +106,19 @@
                         <!-- BEGIN GET REQ -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self/follows </h3>
                         <!-- Issue: The portion below needs to be implemented in a DRY manner (don't repeat yourself) -->
-                        <script src="/js/prettify.js">
-
-                        </script>
-                        <!-- Takes a response object and prettifies it, then outputs it as a PRE -->
-                        <script>
-                            var test = {!! $responses['users_self_follows'] !!};
-                            var jsonPretty = JSON.stringify(test, undefined, 4);
-                            output(syntaxHighlight(jsonPretty));
-                        </script>
+                        <pre> {!! $responses['users_self_follows'] !!}</pre>
 
                         <!-- Get the list of users this user is followed by -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self/followed-by </h3>
-                        <script src="/js/prettify.js">
-
-                        </script>
-                        <script>
-                            var test = {!! $responses['users_self_followedby'] !!};
-                            var jsonPretty = JSON.stringify(test, undefined, 4);
-                            output(syntaxHighlight(jsonPretty));
-                        </script>
+                        <pre> {!! $responses['users_self_followedby'] !!} </pre>
 
                         <!-- List the users who have requested this user's permission to follow. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self/requested-by </h3>
-                        <script src="/js/prettify.js">
-
-                        </script>
-                        <script>
-                            var test = {!! $responses['users_self_requestedby'] !!};
-                            var jsonPretty = JSON.stringify(test, undefined, 4);
-                            output(syntaxHighlight(jsonPretty));
-                        </script>
+                        <pre> {!! $responses['users_self_requestedby'] !!} </pre>
 
                         <!-- Get information about a relationship to another user. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/user-id/relationship </h3>
-                        <script src="/js/prettify.js">
-
-                        </script>
-                        <script>
-                            var test = {!! $responses['users_userid_relationship'] !!};
-                            var jsonPretty = JSON.stringify(test, undefined, 4);
-                            output(syntaxHighlight(jsonPretty));
-                        </script>
+                        <pre> {!! $responses['users_userid_relationship'] !!} </pre>
 
                         <!-- Get information about the owner of the access_token. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/self </h3>
@@ -181,32 +152,53 @@
                             the owner of the access_token has liked this media.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /media/media-id </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = "{!! $responses['media_mediaid'] !!}";
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Get the list of recent media liked by the owner of the access_token.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; user/self/media/liked </h3>
+                        <pre> {!! $responses['users_self_media_liked'] !!} </pre>
+
+                        <!-- Get a list of users who have liked this media. -->
+                        <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /media/media-id/likes </h3>
                         <script src="/js/prettify.js">
 
                         </script>
                         <script>
-                            var test = {!! $responses['users_self_media_liked'] !!};
+                            var test = "{!! $responses['media_mediaid_likes'] !!}";
                             var jsonPretty = JSON.stringify(test, undefined, 4);
                             output(syntaxHighlight(jsonPretty));
                         </script>
 
-                        <!-- Get a list of users who have liked this media. -->
-                        <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /media/media-id/likes </h3>
-                        @include('dummy')
-
                         <!-- Get information about a location. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /locations/location-id  </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = "{!! $responses['locations_locationid'] !!}";
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!-- Get a list of recent media objects from a given location. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /locations/location-id/media/recent </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = "{!! $responses['locations_locationid_media_recent'] !!}";
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                     </div>
                 </div>

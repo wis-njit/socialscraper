@@ -201,26 +201,54 @@
                             The author’s most recent Tweet will be returned inline when possible.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; users/show </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_show'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Returns fully-hydrated user objects for up to 100 users per request, as specified by
                             comma-separated values passed to the user_id and/or screen_name parameters.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; users/lookup </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_lookup'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Returns a collection of relevant Tweets matching a specified query.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; search/tweets </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['search_tweets'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Returns a cursored collection of user IDs for every user following the specified user.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; followers/ids </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['followers_ids'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Search for places that can be attached to a statuses/update. Given a latitude and a
@@ -228,11 +256,20 @@
                             valid places that can be used as the place_id when updating a status.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; geo/search </h3>
-                        @include('dummy')
+
+                        <pre>{!! $responses['geo_search'] !!}</pre>
+
 
                         <!-- Gets informatoin about a user -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; /users/user-id </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_userid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Returns the relationships of the authenticating user to the comma-separated list of up to
@@ -240,31 +277,67 @@
                             Values for connections can be: following, following_requested, followed_by, none, blocking, muting.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; friendships/lookup </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['friendships_lookup'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--  Returns detailed information about the relationship between two arbitrary users. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; friendships/show </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['friendships_show'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!-- Returns all the information about a known place. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; geo/id/:place_id </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['geo_id_placeid'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!-- Returns the lists the specified user has been added to. If user_id or screen_name are not
                         provided the memberships for the authenticating user are returned. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; lists/memberships </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['lists_memberships'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!-- Returns the specified list. Private lists will only be shown if the authenticated user owns the specified list. -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; lists/show  </h3>
-                        @include('dummy')
+                        <pre>{!! $responses['lists_show'] !!}</pre>
+
 
                         <!--
                             Returns a timeline of tweets authored by members of the specified list. Retweets are included by default.
                             Use the include_rts=false parameter to omit retweets.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; lists/statuses </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['lists_statuses'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Returns the locations that Twitter has trending topic information for.
@@ -274,14 +347,28 @@
                             A WOEID is a Yahoo! Where On Earth ID.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; trends/available </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['trends_available'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Returns the locations that Twitter has trending topic information for,
                             closest to a specified location.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; trends/closest </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['trends_closest'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Provides a simple, relevance-based search interface to public user accounts on Twitter.
@@ -289,28 +376,56 @@
                              or other criteria. Exact match searches are not supported.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp;  users/search </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_search'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Access to Twitter’s suggested user list. This returns the list of suggested user categories.
                             The category can be used in GET users / suggestions / :slug to get the users in that category.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp;  users/suggestions </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_suggestions'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Access the users in a given category of the Twitter suggested user list and return their
                             most recent status if they are not a protected user.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp;users/suggestions/:slug/members</h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['users_suggestions_slug_members'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                         <!--
                             Returns a collection of the most recent Tweets posted by the user
                             indicated by the screen_name or user_id parameters.
                         -->
                         <h3><span class="get">&nbsp;GET&nbsp;</span>&nbsp; statuses/user_timeline </h3>
-                        @include('dummy')
+                        <script src="/js/prettify.js">
+
+                        </script>
+                        <script>
+                            var test = {!! $responses['statuses_usertimeline'] !!};
+                            var jsonPretty = JSON.stringify(test, undefined, 4);
+                            output(syntaxHighlight(jsonPretty));
+                        </script>
 
                     </div>
                 </div>

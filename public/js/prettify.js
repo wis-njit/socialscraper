@@ -1,6 +1,10 @@
 /**
  * Created by adaka on 4/8/2017.
  */
+function isObject(obj) {
+    return obj === Object(obj);
+}
+
 function syntaxHighlight(json) {
     json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
@@ -28,6 +32,4 @@ function output(inp) {
     pre.innerHTML = inp;
 
     test[0].appendChild(pre);
-
-
 }
