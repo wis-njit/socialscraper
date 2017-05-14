@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
+use GuzzleHttp\Exception\ClientException;
 use App\Services\SMService;
 use App\Services\UserService;
 use Auth;
@@ -15,7 +16,7 @@ class FacebookController extends ApiController
 {
 
     //The API's base URI on which all requests will be made
-    const URI = 'https://graph.facebook.com/';
+    const URI = 'https://graph.facebook.com/v2.8/';
     protected $name = "";
 
     public function __construct(SMService $smProvider, UserService $userService)
@@ -83,44 +84,52 @@ class FacebookController extends ApiController
         return view('facebook', compact('responses', 'accounts', 'name'));
     }
 
-    /**
-     * POST to a facebook test account to update the information
+
+    /**Update a testuser's account password and/or name
      *
-     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function updateUserInfo(Request $request){
         $client = new Client(['base_uri' => self::URI]);
-
-
+        $accessToken = $this->getProviderToken();
         $test_user_id = $request->get('test_user_id');
-        echo $test_user_id;
 
-        $name = $request->get('name');
-        echo $name;
+        $params = [
+                'password' => $request->get('password'),
+                'name' => $request->get('name'),
+                'access_token' => $accessToken
+        ];
 
-        $password = $request->get('password');
-        echo $password;
-
-       /* $response = $client->post('{+path}{/segments*}{?query,data*}', array(
-            'path'     => '/foo/bar',
-            'segments' => array('one', 'two'),
-            'query'    => 'test',
-            'data'     => array(
-                'more' => 'value'
-            )
-        ));*/
+        try{
+            $response = $client->post($test_user_id . '/?'. http_build_query($params));
+        }
+        catch(ClientException $e){
+            $response = $e->getResponse();
+            $result =  $response->getBody();
+        }
+        return redirect('/user/facebook');
     }
 
-    /**
-     * POST to a facebook test account to update the information
+
+    /**Add a friend to a testuser
      *
-     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function friendRequest(Request $request){
+        $client = new Client(['base_uri' => self::URI]);
+        $accessToken = $this->getProviderToken();
+        $id1 = $request->get('test_user_1');
+        $id2 = $request->get('test_user_2');
 
+        try {
+            $response = $client->post($id1 . '/friends/' . $id2 . '/?access_token=' . $accessToken);
+        }
+        catch(ClientException $e){
+            $response = $e->getResponse();
+            $result =  $response->getBody();
+        }
+        return redirect('/user/facebook');
     }
-
-
-
-
 }
