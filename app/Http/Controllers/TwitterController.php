@@ -23,6 +23,32 @@ class TwitterController extends ApiController
         parent::__construct( $smProvider,  $userService, SocialProvidersEnum::TWITTER);
     }
 
+    /**Creates an OAuth1 client for twitter connections
+     *
+     * @return Client
+     */
+    private function createOauthClient(): Client
+    {
+        $stack = HandlerStack::create();
+
+        /**Using Guzzle's OAuth1 subscriber, we compose the headers,
+         * parameters, etc needed for the request.
+         */
+        $middleware = new Oauth1([
+            'consumer_key' => env('TWITTER_APP_ID'),
+            'consumer_secret' => env('TWITTER_APP_SECRET'),
+            'token' => $this->getProviderToken(),
+            'token_secret' => $this->getProviderTokenKey()
+        ]);
+        $stack->push($middleware);
+
+        $client = new Client([
+            'base_uri' => self::URI,
+            'handler' => $stack,
+            'auth' => 'oauth'
+        ]);
+        return $client;
+    }
 
     /**
      *Handles the initial Twitter API request from the dashboard
@@ -46,27 +72,8 @@ class TwitterController extends ApiController
     public function index($twitUserId = null, $accessToken = null, $accessTokenSecret = null){
 
         $twitUserId = $this->getProviderUserId();
-        $accessToken = $this->getProviderToken();
-        $accessTokenSecret = $this->getProviderTokenKey();
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
-        $stack = HandlerStack::create();
-
-        /**Using Guzzle's OAuth1 subscriber, we compose the headers,
-         * parameters, etc needed for the request.
-        */
-        $middleware = new Oauth1([
-            'consumer_key'    => env('TWITTER_APP_ID'),
-            'consumer_secret' => env('TWITTER_APP_SECRET'),
-            'token'           => $accessToken,
-            'token_secret'    => $accessTokenSecret
-        ]);
-        $stack->push($middleware);
-
-        $client = new Client([
-            'base_uri' => self::URI,
-            'handler' => $stack,
-            'auth' => 'oauth'
-        ]);
+        $client = $this->createOauthClient();
 
         //TODO refactor using URI template
         /**Use Guzzle to make all requests in parallel and write responses
@@ -110,9 +117,12 @@ class TwitterController extends ApiController
 
     public function updateStatus(Request $request){
 
+
     }
 
     public function updateAccountStatus(Request $request){
 
     }
+
+
 }
