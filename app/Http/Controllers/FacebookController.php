@@ -94,6 +94,7 @@ class FacebookController extends ApiController
         $client = new Client(['base_uri' => self::URI]);
         $accessToken = $this->getProviderToken();
         $test_user_id = $request->get('test_user_id');
+        $response = "";
 
         $params = [
                 'password' => $request->get('password'),
@@ -101,14 +102,17 @@ class FacebookController extends ApiController
                 'access_token' => $accessToken
         ];
 
+
         try{
             $response = $client->post($test_user_id . '/?'. http_build_query($params));
         }
         catch(ClientException $e){
-            $response = $e->getResponse();
-            $result =  $response->getBody();
+            $response = $e->getResponse()->getBody();
         }
-        return redirect('/user/facebook');
+        finally{
+            $request.session()->flash('response', (string)$response);
+            return redirect('/user/facebook');
+        }
     }
 
 
@@ -117,19 +121,21 @@ class FacebookController extends ApiController
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function friendRequest(Request $request){
+    public function friendRequest(Request $request)
+    {
         $client = new Client(['base_uri' => self::URI]);
         $accessToken = $this->getProviderToken();
         $id1 = $request->get('test_user_1');
         $id2 = $request->get('test_user_2');
 
+
         try {
             $response = $client->post($id1 . '/friends/' . $id2 . '/?access_token=' . $accessToken);
+        } catch (ClientException $e) {
+            $response = $e->getResponse()->getBody();
+        } finally {
+            $request.session()->flash('response', (string)$response);
+            return redirect('/user/facebook');
         }
-        catch(ClientException $e){
-            $response = $e->getResponse();
-            $result =  $response->getBody();
-        }
-        return redirect('/user/facebook');
     }
 }
