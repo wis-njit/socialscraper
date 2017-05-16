@@ -7,7 +7,6 @@
          User must have linked their SNS account to SS (Social Scraper)
          on the dashboard page (lvh.me:8000/home)
      -->
-
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
@@ -82,6 +81,17 @@
                             <div class="col-md-12">
                                 <h1> Results</h1>
                             </div>
+                            <div>
+                                <script src="/js/prettify.js">
+
+                                </script>
+                                <!-- Takes a response object and prettifies it, then outputs it as a PRE -->
+                                <script>
+                                    var test = {!! Session::get('response') !!};
+                                    var jsonPretty = JSON.stringify(test, undefined, 4);
+                                    output(syntaxHighlight(jsonPretty));
+                                </script>
+                            </div>
                         </div>
 
                         <h3> <span class="post">&nbsp;POST&nbsp;</span>&nbsp;/{test-user-1}/friends/{test-user-2} </h3>
@@ -116,6 +126,17 @@
                             <div class="col-md-12">
                                 <h1> Results</h1>
                             </div>
+                            <div>
+                                <script src="/js/prettify.js">
+
+                                </script>
+                                <!-- Takes a response object and prettifies it, then outputs it as a PRE -->
+                                <script>
+                                    var test = {!! Session::get('response') !!};
+                                    var jsonPretty = JSON.stringify(test, undefined, 4);
+                                    output(syntaxHighlight(jsonPretty));
+                                </script>
+                            </div>
                         </div>
                         <!-- END POST FORMS -->
 
@@ -130,6 +151,12 @@
                          -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friendlists </h3>
                         <!-- Issue: The portion below needs to be implemented in a DRY manner (don't repeat yourself) -->
+                        @include('dummy')
+
+
+                        <!-- Gets the current user's friends -->
+                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
+                        <!-- dummy JSON -->
                         <script src="/js/prettify.js">
 
                         </script>
@@ -139,11 +166,6 @@
                             var jsonPretty = JSON.stringify(test, undefined, 4);
                             output(syntaxHighlight(jsonPretty));
                         </script>
-
-                        <!-- Gets the current user's friends -->
-                        <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp;/{user-id}/friends </h3>
-                        <!-- dummy JSON -->
-                        @include('dummy')
 
                         <!-- Gets a information about a post -->
                         <h3> <span class="get">&nbsp;GET&nbsp;</span>&nbsp; /{post-id} </h3>
