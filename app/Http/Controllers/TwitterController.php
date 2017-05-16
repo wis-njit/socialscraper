@@ -97,6 +97,13 @@ class TwitterController extends ApiController
             'geo_id_placeid' => $client->getAsync('geo/id/' . '7238f93a3e899af6' . '.json'),
             'lists_memberships' => $client->getAsync('lists/memberships.json', $params),
             'lists_show' => $client->getAsync('lists/show.json' . '?owner_id=' . $twitUserId . '&list_id=' . '0'),
+            'trends_available' => $client->getAsync('trends/available.json'),
+            'trends_closest' => $client->getAsync('trends/closest.json', ['query' => ['lat' => '37.781157', 'long' => '-122.400612831116']]),
+            'users_search' => $client->getAsync('users/search.json?q=' . 'golden'),
+            'users_suggestions' => $client->getAsync('users/suggestions.json'),
+            'users_suggestions_slug_members' => $client->getAsync('users/suggestions/' . 'funny' . '/members.json'),
+            'statuses_usertimeline' => $client->getAsync('statuses/user_timeline.json'),
+            //'lists_statuses' => $client->getAsync('lists/statuses.json', ['query' => ['slug' => 'funny', 'owner_screen_name' => 'azizansari', 'count' => '1']])
 
         ];
 
@@ -109,12 +116,6 @@ class TwitterController extends ApiController
          */
         $responses['users_userid'] = self::mockDataHead . 'users_userid'. self::mockData;
         $responses['lists_statuses'] = self::mockDataHead . 'lists_statuses'. self::mockData;
-        $responses['trends_available'] = self::mockDataHead . 'trends_available'. self::mockData;
-        $responses['trends_closest'] = self::mockDataHead . 'trends_closest'. self::mockData;
-        $responses['users_search'] = self::mockDataHead . 'users_search'. self::mockData;
-        $responses['users_suggestions'] = self::mockDataHead . 'users_suggestions'. self::mockData;
-        $responses['users_suggestions_slug_members'] = self::mockDataHead . 'users_suggestions_slug_members'. self::mockData;
-        $responses['statuses_usertimeline'] = self::mockDataHead . 'statuses_usertimeline'. self::mockData;
 
         return view('twitter', compact('responses', 'accounts'));
     }
