@@ -48,6 +48,9 @@ class FacebookController extends ApiController
         $accessToken = $this->getProviderToken();
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $client = new Client(['base_uri' => self::URI]);
+        $params = ['query' => [
+            'access_token' => $this->getProviderToken()
+        ]];
 
         //TODO refactor using URI template
         /**Use Guzzle to make all requests in parallel and write responses
@@ -58,10 +61,10 @@ class FacebookController extends ApiController
          * configured for test users and the data populated in their accounts.
          */
         $promises = [
-            'userid' => $client->getAsync($fbUserId . '?access_token=' . $accessToken),
-            'userid_friends'   => $client->getAsync($fbUserId . '/friends' . '?access_token=' . $accessToken),
-            'groups'   => $client->getAsync($fbUserId . '/groups' . '?access_token=' . $accessToken),
-            'posts'   => $client->getAsync($fbUserId . '/posts' . '?access_token=' . $accessToken),
+            'userid' => $client->getAsync($fbUserId , $params),
+            'userid_friends'   => $client->getAsync($fbUserId . '/friends', $params),
+            'groups'   => $client->getAsync($fbUserId . '/groups', $params),
+            'posts'   => $client->getAsync($fbUserId . '/posts', $params),
         ];
 
         $results = Promise\settle($promises)->wait();
@@ -94,23 +97,21 @@ class FacebookController extends ApiController
         $client = new Client(['base_uri' => self::URI]);
         $accessToken = $this->getProviderToken();
         $test_user_id = $request->get('test_user_id');
+        $params = ['query' => [
+            'password' => $request->get('password'),
+            'name' => $request->get('name'),
+            'access_token' => $accessToken
+        ]];
         $response = "";
 
-        $params = [
-                'password' => $request->get('password'),
-                'name' => $request->get('name'),
-                'access_token' => $accessToken
-        ];
-
-
         try{
-            $response = $client->post($test_user_id . '/?'. http_build_query($params));
+            $response = $client->post($test_user_id , $params);
         }
         catch(ClientException $e){
-            $response = $e->getResponse()->getBody();
+            $response = $e->getResponse();
         }
         finally{
-            $request.session()->flash('response', (string)$response);
+            $request.session()->flash('response', (string)$response->getBody());
             return redirect('/user/facebook');
         }
     }
@@ -124,17 +125,19 @@ class FacebookController extends ApiController
     public function friendRequest(Request $request)
     {
         $client = new Client(['base_uri' => self::URI]);
-        $accessToken = $this->getProviderToken();
         $id1 = $request->get('test_user_1');
         $id2 = $request->get('test_user_2');
-
+        $params = ['query' => [
+            'access_token' => $this->getProviderToken()
+        ]];
+        $response = "";
 
         try {
-            $response = $client->post($id1 . '/friends/' . $id2 . '/?access_token=' . $accessToken);
+            $response = $client->post($id1 . '/friends/' . $id2, $params);
         } catch (ClientException $e) {
-            $response = $e->getResponse()->getBody();
+            $response = $e->getResponse();
         } finally {
-            $request.session()->flash('response', (string)$response);
+            $request.session()->flash('response', (string)$response->getBody());
             return redirect('/user/facebook');
         }
     }
