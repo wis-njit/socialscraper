@@ -126,7 +126,7 @@ class TwitterController extends ApiController
      */
     public function updateStatus(Request $request){
 
-        $params = [
+        $params = [ 'query' => [
             'status' => $request->get('status'),
             'in_reply_to_status_id' => $request->get('in_reply_to_status_id'),
             'possibly_sensitive' => $request->get('possibly_sensitive'),
@@ -136,11 +136,11 @@ class TwitterController extends ApiController
             'display_coordinates' => $request->get('display_coordinates'),
             'trim_user' => $request->get('trim_user'),
             'media_ids' => $request->get('media_ids')
-        ];
+        ]];
         $response = "";
 
         try {
-            $response = $this->createOauthClient()->post('statuses/update.json?' . http_build_query($params));
+            $response = $this->createOauthClient()->post('statuses/update.json', $params);
         } catch (ClientException $e) {
             $response = $e->getResponse();
         } finally {
@@ -158,7 +158,7 @@ class TwitterController extends ApiController
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function updateAccountStatus(Request $request){
-        $params = [
+        $params = [ 'query' => [
             'name' => $request->get('name'),
             'url' => $request->get('url'),
             'location' => $request->get('location'),
@@ -166,11 +166,11 @@ class TwitterController extends ApiController
             'profile_link_color' => $request->get('profile_link_color'),
             'include_entities' => $request->get('include_entities'),
             'skip_status' => $request->get('skip_status')
-        ];
+        ]];
         $response = "";
 
         try {
-            $response = $this->createOauthClient()->post('account/update_profile.json?' . http_build_query($params));
+            $response = $this->createOauthClient()->post('account/update_profile.json', $params);
         } catch (ClientException $e) {
             $response = $e->getResponse();
         } finally {
