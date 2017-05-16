@@ -140,9 +140,9 @@ class TwitterController extends ApiController
         try {
             $response = $this->createOauthClient()->post('statuses/update.json?' . http_build_query($params));
         } catch (ClientException $e) {
-            $response = $e->getResponse()->getBody();
+            $response = $e->getResponse();
         } finally {
-            $request.session()->flash('response', (string)$response);
+            $request.session()->flash('response', (string)$response->getBody());
             return redirect('/user/twitter');
         }
 
