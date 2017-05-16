@@ -3,10 +3,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Subscriber\Oauth\Oauth1;
+use GuzzleHttp\Exception\ClientException;
 use App\Services\SMService;
 use App\Services\UserService;
 use Auth;
@@ -115,8 +117,34 @@ class TwitterController extends ApiController
         return view('twitter', compact('responses', 'accounts'));
     }
 
+    /**Updates the authenticating user’s current status, also known as Tweeting
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function updateStatus(Request $request){
 
+        $params = [
+            'status' => $request->get('status'),
+            'in_reply_to_status_id' => $request->get('in_reply_to_status_id'),
+            'possibly_sensitive' => $request->get('possibly_sensitive'),
+            'lat' => $request->get('lat'),
+            'long' => $request->get('long'),
+            'place_id' => $request->get('place_id'),
+            'display_coordinates' => $request->get('display_coordinates'),
+            'trim_user' => $request->get('trim_user'),
+            'media_ids' => $request->get('media_ids')
+        ];
+        $response = "";
+
+        try {
+            $response = $this->createOauthClient()->post('statuses/update.json?' . http_build_query($params));
+        } catch (ClientException $e) {
+            $response = $e->getResponse()->getBody();
+        } finally {
+            $request.session()->flash('response', (string)$response);
+            return redirect('/user/twitter');
+        }
 
     }
 
