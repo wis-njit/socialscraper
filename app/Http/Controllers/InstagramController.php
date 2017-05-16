@@ -3,11 +3,12 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Promise;
+use GuzzleHttp\Exception\ClientException;
 use App\Services\SMService;
 use App\Services\UserService;
 use Auth;
 use Config\Constants\SocialProvidersEnum;
-use GuzzleHttp\Psr7\Request;
+use Illuminate\Http\Request;
 
 class InstagramController extends ApiController
 {
@@ -80,18 +81,60 @@ class InstagramController extends ApiController
 
         return view('instagram', compact('responses', 'accounts'));
     }
-    /*
-     * Modify the relationship between the current user and the target user.
+
+
+    /**Modify the relationship between the current user and the target user.
      * You need to include an action parameter to
      * specify the relationship action you want to perform.
      * Valid actions are: 'follow', 'unfollow' 'approve' or 'ignore'.
+     *
+     * If no user ID is passed, the current will be used
+     *
+     * Requires scope: relationships
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function modifyRelationship(Request $request){
+        $client = new Client(['base_uri' => self::URI]);
+        $id = $request->get('user_id') ? $request->get('user_id') :$this->getProviderUserId();
+        $params = ['query' => [
 
-    }
-    //Set a like on this media by the currently authenticated user.
-    public function like(Request $request){
+            'action' => $request->get('action'),
+            'access_token' => $this->getProviderToken()
+        ]];
+        $response = "";
 
+        try {
+            $response = $client->post('/v1/users/' . $id . '/relationship', $params);
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+        } finally {
+            $request.session()->flash('response', (string)$response->getBody());
+            return redirect('/user/instagram');
+        }
     }
+
+    /**Get a list of users who have liked this media.
+     * The public_content scope is required for media that does not belong to the owner of the access_token.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    /*public function like(Request $request){
+        $client = new Client(['base_uri' => self::URI]);
+        $accessToken = $this->getProviderToken();
+        $id = $request->get('user-id');
+        $action = $request->get('action');
+
+
+        try {
+            $response = $client->post($id1 . '/friends/' . $id2 . '/?access_token=' . $accessToken);
+        } catch (ClientException $e) {
+            $response = $e->getResponse()->getBody();
+        } finally {
+            $request.session()->flash('response', (string)$response);
+            return redirect('/user/insatgram');
+        }
+    }*/
 
 }
