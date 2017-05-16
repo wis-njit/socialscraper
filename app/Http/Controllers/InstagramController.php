@@ -40,12 +40,12 @@ class InstagramController extends ApiController
      * @return \Illuminate\Http\Response
      */
     public function index($instUserId = null, $accessToken = null){
-        $instUserId = $this->getProviderUserId();
-        $accessToken = $this->getProviderToken();
+        $instUserId = $instUserId ? $instUserId : $this->getProviderUserId();
+        $accessToken = $accessToken ? $accessToken : $this->getProviderToken();
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $client = new Client(['base_uri' => self::URI]);
         $params = ['query' => [
-            'access_token' => $this->getProviderToken()
+            'access_token' => $accessToken
         ]];
         //TODO refactor using URI template
         /**Use Guzzle to make all requests in parallel and write responses

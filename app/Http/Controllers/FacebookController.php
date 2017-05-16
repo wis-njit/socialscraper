@@ -44,12 +44,12 @@ class FacebookController extends ApiController
      */
     public function index($fbUserId = null, $accessToken = null){
 
-        $fbUserId = $this->getProviderUserId();
-        $accessToken = $this->getProviderToken();
+        $fbUserId = $fbUserId ? $fbUserId : $this->getProviderUserId();
+        $accessToken = $accessToken ? $accessToken : $this->getProviderToken();
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $client = new Client(['base_uri' => self::URI]);
         $params = ['query' => [
-            'access_token' => $this->getProviderToken()
+            'access_token' => $accessToken
         ]];
 
         //TODO refactor using URI template
