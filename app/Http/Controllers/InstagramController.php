@@ -14,7 +14,7 @@ class InstagramController extends ApiController
 {
 
     //The API's base URI on which all requests will be made
-    const URI = 'https://api.instagram.com';
+    const URI = 'https://api.instagram.com/v1/';
 
     public function __construct(SMService $smProvider, UserService $userService)
     {
@@ -54,17 +54,17 @@ class InstagramController extends ApiController
          * configured for test users and the data populated in their accounts.
          */
         $promises = [
-            'users_self' => $client->getAsync('/v1/users/self/' . '?access_token=' . $accessToken),
-            'users_userid'   => $client->getAsync('/v1/users/' . $instUserId . '?access_token=' . $accessToken),
-            'users_self_follows'   => $client->getAsync('/v1/users/self/follows' . '?access_token=' . $accessToken),
-            'users_self_followedby'   => $client->getAsync('/v1/users/self/followed-by' . '?access_token=' . $accessToken),
-            'users_self_requestedby'   => $client->getAsync('/v1/users/self/requested-by' . '?access_token=' . $accessToken),
-            'users_userid_relationship'   => $client->getAsync('/v1/users/' . $instUserId . '/relationship' . '?access_token=' . $accessToken),
-            'users_self_media_liked'   => $client->getAsync('/v1/users/self/media/liked' . '?access_token=' . $accessToken),
-            //'media_mediaid_likes'   => $client->getAsync('/v1/users/media/' . $mediaid . '/likes' . '?access_token=' . $accessToken),
-            //'media_mediaid'   => $client->getAsync('/v1/users/media/' . $mediaid . '?access_token=' . $accessToken),
-            //'locations_locationid'   => $client->getAsync('/v1/users/locations/' . $locationid . '?access_token=' . $accessToken),
-            //'locations_locationid_media_recent'   => $client->getAsync('/v1/users/locations/' . $locationid . '/media/recent/' . '?access_token=' . $accessToken),
+            'users_self' => $client->getAsync('users/self/' . '?access_token=' . $accessToken),
+            'users_userid'   => $client->getAsync('users/' . $instUserId . '?access_token=' . $accessToken),
+            'users_self_follows'   => $client->getAsync('users/self/follows' . '?access_token=' . $accessToken),
+            'users_self_followedby'   => $client->getAsync('users/self/followed-by' . '?access_token=' . $accessToken),
+            'users_self_requestedby'   => $client->getAsync('users/self/requested-by' . '?access_token=' . $accessToken),
+            'users_userid_relationship'   => $client->getAsync('users/' . $instUserId . '/relationship' . '?access_token=' . $accessToken),
+            'users_self_media_liked'   => $client->getAsync('users/self/media/liked' . '?access_token=' . $accessToken),
+            //'media_mediaid_likes'   => $client->getAsync('users/media/' . $mediaid . '/likes' . '?access_token=' . $accessToken),
+            //'media_mediaid'   => $client->getAsync('users/media/' . $mediaid . '?access_token=' . $accessToken),
+            //'locations_locationid'   => $client->getAsync('users/locations/' . $locationid . '?access_token=' . $accessToken),
+            //'locations_locationid_media_recent'   => $client->getAsync('users/locations/' . $locationid . '/media/recent/' . '?access_token=' . $accessToken),
         ];
 
         $results = Promise\settle($promises)->wait();
