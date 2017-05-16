@@ -120,21 +120,25 @@ class InstagramController extends ApiController
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    /*public function like(Request $request){
+    public function like(Request $request){
         $client = new Client(['base_uri' => self::URI]);
-        $accessToken = $this->getProviderToken();
-        $id = $request->get('user-id');
-        $action = $request->get('action');
+        $params = ['query' => [
 
+            'access_token' => $this->getProviderToken()
+        ]];
+        $mediaId = $request->get('media_id');
+
+        $response = "";
 
         try {
-            $response = $client->post($id1 . '/friends/' . $id2 . '/?access_token=' . $accessToken);
+            $response = $client->post('/v1/media/' . $mediaId . '/likes', $params);
         } catch (ClientException $e) {
-            $response = $e->getResponse()->getBody();
+            $response = $e->getResponse();
         } finally {
-            $request.session()->flash('response', (string)$response);
-            return redirect('/user/insatgram');
+            dd((string)$response->getBody());
+            $request.session()->flash('response', (string)$response->getBody());
+            return redirect('/user/instagram');
         }
-    }*/
+    }
 
 }
