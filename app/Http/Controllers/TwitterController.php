@@ -73,11 +73,13 @@ class TwitterController extends ApiController
      */
     public function index($twitUserId = null, $accessToken = null, $accessTokenSecret = null){
 
-        $twitUserId = $this->getProviderUserId();
+        $twitUserId = $twitUserId ? : $this->getProviderUserId();
         $accounts = $this->userService->getAllProviderAccounts(Auth::id());
         $client = $this->createOauthClient();
+        $params = ['query' => [
+            'user_id' => $twitUserId
+        ]];
 
-        //TODO refactor using URI template
         /**Use Guzzle to make all requests in parallel and write responses
          *to an array for reading
          *
@@ -85,15 +87,15 @@ class TwitterController extends ApiController
          * requests to are included so far.
          */
         $promises = [
-            'users_show' => $client->getAsync('users/show.json' . '?user_id=' . $twitUserId),
-            'users_lookup' => $client->getAsync('users/lookup.json' . '?user_id=' . $twitUserId),
+            'users_show' => $client->getAsync('users/show.json', $params),
+            'users_lookup' => $client->getAsync('users/lookup.json', $params),
             'search_tweets' => $client->getAsync('search/tweets.json' . '?q=' . urlencode('searched text')),
-            'followers_ids' => $client->getAsync('followers/ids.json' . '?user_id=' . $twitUserId),
+            'followers_ids' => $client->getAsync('followers/ids.json', $params),
             'geo_search' => $client->getAsync('geo/search.json' . '?ip=172.56.132.25'),
-            'friendships_lookup' => $client->getAsync('friendships/lookup.json' . '?user_id=' . $twitUserId),
+            'friendships_lookup' => $client->getAsync('friendships/lookup.json', $params),
             'friendships_show' => $client->getAsync('friendships/show.json' . '?target_id=' . $twitUserId),
             'geo_id_placeid' => $client->getAsync('geo/id/' . '7238f93a3e899af6' . '.json'),
-            'lists_memberships' => $client->getAsync('lists/memberships.json' . '?user_id=' . $twitUserId),
+            'lists_memberships' => $client->getAsync('lists/memberships.json', $params),
             'lists_show' => $client->getAsync('lists/show.json' . '?owner_id=' . $twitUserId . '&list_id=' . '0'),
 
         ];
