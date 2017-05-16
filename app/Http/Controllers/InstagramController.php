@@ -107,7 +107,7 @@ class InstagramController extends ApiController
         $response = "";
 
         try {
-            $response = $client->post('/v1/users/' . $id . '/relationship', $params);
+            $response = $client->post('users/' . $id . '/relationship', $params);
         } catch (ClientException $e) {
             $response = $e->getResponse();
         } finally {
@@ -133,7 +133,7 @@ class InstagramController extends ApiController
         $response = "";
 
         try {
-            $response = $client->post('/v1/media/' . $mediaId . '/likes', $params);
+            $response = $client->post('media/' . $mediaId . '/likes', $params);
         } catch (ClientException $e) {
             $response = $e->getResponse();
         } finally {
