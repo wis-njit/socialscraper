@@ -148,8 +148,33 @@ class TwitterController extends ApiController
 
     }
 
-    public function updateAccountStatus(Request $request){
 
+    /**Sets some values that users are able to set under the “Account” tab of their settings page.
+     * Only the parameters specified will be updated.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function updateAccountStatus(Request $request){
+        $params = [
+            'name' => $request->get('name'),
+            'url' => $request->get('url'),
+            'location' => $request->get('location'),
+            'description' => $request->get('description'),
+            'profile_link_color' => $request->get('profile_link_color'),
+            'include_entities' => $request->get('include_entities'),
+            'skip_status' => $request->get('skip_status')
+        ];
+        $response = "";
+
+        try {
+            $response = $this->createOauthClient()->post('account/update_profile.json?' . http_build_query($params));
+        } catch (ClientException $e) {
+            $response = $e->getResponse();
+        } finally {
+            $request.session()->flash('response', (string)$response->getBody());
+            return redirect('/user/twitter');
+        }
     }
 
 
